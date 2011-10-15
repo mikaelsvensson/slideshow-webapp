@@ -1,0 +1,11 @@
+div#panelcontainer-designmode > div.panel-workarea {
+	bottom: 50px;
+	left: 300px;
+}
+div#panelcontainer-designmode > div.panel-bottom {
+	height: 50px;
+}
+div#panelcontainer-designmode > div.panel-left {
+	width: 300px;
+	bottom: 50px;
+}

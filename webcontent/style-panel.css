@@ -1,0 +1,66 @@
+div.panelcontainer,
+div.panel {
+	position: absolute;
+}
+div.panelcontainer, div.panel-workarea {
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+div.panelcontainer-cols {
+}
+div.panelcontainer-rows {
+	-moz-box-orient: vertical;
+	-webkit-box-orient: vertical;
+	-moz-box-align: stretch;
+	-webkit-box-align: stretch;
+	height: 600px;
+	height: 100%;
+}
+div.panel {
+	border-radius: 5px 0px;
+	border: 1px solid red;
+}
+div.panel-toolbar {
+}
+div.panel-top {
+	top: 0;
+	left: 0;
+	right: 0; 	
+}
+div.panel-bottom {
+	bottom: 0;
+	left: 0;
+	right: 0; 	
+}
+div.panel-left {
+	bottom: 0;
+	left: 0;
+	top: 0; 	
+}
+div.panel-right {
+	bottom: 0;
+	top: 0;
+	right: 0; 	
+}
+div.panel-workarea {
+	overflow: auto;
+}
+
+
+div.panel div.flexpanel-container {
+    -moz-box-orient: vertical;
+    display: -moz-box;
+    height: 100%;
+    width: 100%;
+}
+div.flexpanel-top {
+	-moz-box-flex: 0;
+}
+div.flexpanel-center {
+	-moz-box-flex: 1;
+}
+div.flexpanel-bottom {
+	-moz-box-flex: 0;
+}
