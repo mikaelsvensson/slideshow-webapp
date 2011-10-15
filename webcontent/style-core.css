@@ -1,14 +1,13 @@
 /*
  * UI font.
- * 
+ *
  * Usage:
  * font-family: "Open Sans", sans-serif;
  */
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700);
-
 /*
  * Stamp fonts. Font weight is 400 (or 700 in two cases).
- * 
+ *
  * Usage:
  * font-family: 'Permanent Marker', cursive;
  * font-family: 'Corben', cursive;
@@ -22,38 +21,47 @@
  * font-family: 'Sancreek', cursive;
  */
 @import url(http://fonts.googleapis.com/css?family=Permanent+Marker|Corben:700|Shadows+Into+Light|UnifrakturCook:700|Rock+Salt|Chewy|Special+Elite|UnifrakturMaguntia|Black+Ops+One|Sancreek);
-
 @import url(style-panel.css);
 @import url(style-dialog-designmode.css);
-
 body {
 	font-family: "Open Sans", sans-serif;
 	margin: 0;
-	padding: 0;	
+	padding: 0;
 	font-weight: 400;
 	height: 100%;
 	overflow: hidden;
-	font-size: 0.8em;
+	font-size: 0.9em;
 }
 h1 {
-    font-size: 3em;
-    font-weight: 300;
-    letter-spacing: -0.05em;
-    margin: 0;
-    padding: 0;
+	font-size: 2em;
+	font-weight: 300;
+	letter-spacing: -0.05em;
+	margin: 0;
+	padding: 0;
 }
-
-#images div.sep, #images div.image {
+h1 strong {
+	font-weight: 700;
+}
+.slides div.sep, .slides div.image {
 	height: 250px;
 	display: block;
 	float: left;
 	margin: 10px;
 }
-#images div.sep {
+.slides div.sep {
 	width: 30px;
-	background-color: yellow;
+	border: 1px dashed #aaa;
+	background-color: #eee;
+	border-radius: 10px;
+	/*box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.5);*/
 }
-#images div.image {
+/*
+ * Special separator design if no slides have been added.
+ */
+.slides div.sep:only-child {
+	width: 100px;
+}
+.slides div.image {
 	width: 250px;
 	border: 1px solid #aaa;
 	background-color: #eee;
@@ -64,45 +72,44 @@ h1 {
 	background-position: center center;
 	box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.5);
 }
-#images figure {
-    -moz-box-align: center;
-    -webkit-box-align: center;
-    -moz-box-orient: vertical;
-    -webkit-box-orient: vertical;
-    display: -moz-box;
-    display: -webkit-box;
-    height: 100%;
-    width: 100%;
-    
+.slides figure {
+	-moz-box-align: center;
+	-webkit-box-align: center;
+	-moz-box-orient: vertical;
+	-webkit-box-orient: vertical;
+	display: -moz-box;
+	display: -webkit-box;
+	height: 100%;
+	width: 100%;
 	margin: 0;
 	padding: 0;
 }
-#images figure div {
-    -moz-box-align: center;
-    -webkit-box-align: center;
-    -moz-box-flex: 1;
-    -webkit-box-flex: 1;
-    display: -moz-box;
-    display: -webkit-box;
+.slides figure div {
+	-moz-box-align: center;
+	-webkit-box-align: center;
+	-moz-box-flex: 1;
+	-webkit-box-flex: 1;
+	display: -moz-box;
+	display: -webkit-box;
 }
-#images figure img {
+.slides figure img {
 	border: 1px solid #777;
 	vertical-align: middle;
 }
-#images figcaption {
+.slides figcaption {
 	-moz-box-flex: 0;
 	-webkit-box-flex: 0;
-	
-	font-size: 0.8em;
+	font-size: 0.9em;
 	color: rgba(0, 0, 0, 0.5);
+	margin: 0.5em 0;
 }
-#images div.image:nth-child(4n+1) {
+.slides div.image:nth-child(4n+1) {
 	background-color: #ccc;
 }
-#images div.sep {
+.slides div.sep {
 	-moz-transition: background-color 0.5s linear;
 	-webkit-transition: background-color 0.5s linear;
 }
-#images div.sep.drag-over {
+.slides div.sep.drag-over {
 	background-color: blue;
 }

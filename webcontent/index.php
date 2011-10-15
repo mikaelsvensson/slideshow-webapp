@@ -9,6 +9,8 @@
 
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 		<script src="index.js"></script>
+		<!--<script src="slideshow.js"></script>-->
+		<script src="slideshow-designer.js"></script>
 		
 		<title>Slide Show</title>
 	</head>

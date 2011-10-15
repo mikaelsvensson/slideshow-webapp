@@ -1,10 +1,10 @@
 The configuration/layout of each slideshow is stored in a JSON structure like this:
 
 var slideshow = {
-	name: "Demo Slideshow",
+	title: "Demo Slideshow",
 	slides: [
 		{
-			uri: "slides/MS_110208_2819.JPG",
+			url: "slides/MS_110208_2819.JPG",
 			title: "Visiting the archipelago",
 			transition: "fade",
 			effects: [

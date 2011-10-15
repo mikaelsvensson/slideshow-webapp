@@ -51,16 +51,22 @@ div.panel-workarea {
 
 div.panel div.flexpanel-container {
     -moz-box-orient: vertical;
+    -webkit-box-orient: vertical;
     display: -moz-box;
+    display: -webkit-box;
     height: 100%;
     width: 100%;
 }
 div.flexpanel-top {
 	-moz-box-flex: 0;
+	-webkit-box-flex: 0;
 }
 div.flexpanel-center {
 	-moz-box-flex: 1;
+	-webkit-box-flex: 1;
+	overflow: auto;
 }
 div.flexpanel-bottom {
 	-moz-box-flex: 0;
+	-webkit-box-flex: 0;
 }
