@@ -1,9 +1,7 @@
 <div class="panelcontainer panelcontainer-rows" id="panelcontainer-designmode">
 	<div class="panel panel-workarea">
 		<h1>Bildspel <strong id="designer-title"></strong></h1>
-		<div id="designer" class="slides"></div>
-		
-		<div id="images"></div>
+		<div id="designer-images" class="slides"></div>
 		<div style="clear: both"></div>
 	</div>
 	<div class="panel panel-toolbar panel-bottom" id="designer-buttons">

@@ -19,8 +19,14 @@ div.panelcontainer-rows {
 	height: 100%;
 }
 div.panel {
-	border-radius: 5px 0px;
-	border: 1px solid red;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 10px 10px 10px 10px;
+    background-image: -moz-linear-gradient(#ddd, #fff 2em);
+    background-image: -webkit-linear-gradient(#ddd, #fff 2em);
+    margin: 0px;
+    padding: 10px;
 }
 div.panel-toolbar {
 }

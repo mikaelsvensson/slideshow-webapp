@@ -22,7 +22,8 @@
  */
 @import url(http://fonts.googleapis.com/css?family=Permanent+Marker|Corben:700|Shadows+Into+Light|UnifrakturCook:700|Rock+Salt|Chewy|Special+Elite|UnifrakturMaguntia|Black+Ops+One|Sancreek);
 @import url(style-panel.css);
-@import url(style-dialog-designmode.css);
+@import url(style-dialog-designer.css);
+@import url(style-dialog-viewer.css);
 body {
 	font-family: "Open Sans", sans-serif;
 	margin: 0;
@@ -31,6 +32,17 @@ body {
 	height: 100%;
 	overflow: hidden;
 	font-size: 0.9em;
+}
+body > div {
+	display: none;
+}
+body.mode-viewer div#viewer,
+body.mode-designer div#designer {
+	display: block;
+}
+p, figure {
+	margin: 0;
+	padding: 0;
 }
 h1 {
 	font-size: 2em;
@@ -81,8 +93,6 @@ h1 strong {
 	display: -webkit-box;
 	height: 100%;
 	width: 100%;
-	margin: 0;
-	padding: 0;
 }
 .slides figure div {
 	-moz-box-align: center;

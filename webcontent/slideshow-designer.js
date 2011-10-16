@@ -9,9 +9,10 @@
 	var DND_TYPE_ADD = "ADD";
 
 	var URL_TO_SLIDE_TITLE_PATTERN = /\/?(\w+)\.\w{2,5}$/;
-	
-	SlideshowDesigner = function(slideshowModel, slidesContainerId, galleryContainerId, localFilesDropContainerId, buttonContainerId) {
+	SlideshowDesigner = function(slideshowModel, imageCollection, viewer, slidesContainerId, galleryContainerId, localFilesDropContainerId, buttonContainerId) {
 		this._model = slideshowModel;
+		this._imageCollection = imageCollection;
+		this._viewer = viewer;
 		this._slidesContainer = $("#" + slidesContainerId);
 		this._galleryContainer = $("#" + galleryContainerId);
 		this._localFilesDropContainer = $("#" + localFilesDropContainerId);
@@ -25,34 +26,29 @@
 		this._initButtons();
 	};
 	SlideshowDesigner.prototype._initGallery = function() {
-		var that = this;
-		$.getJSON("http://www.mikaelsvensson.info/slideshow/service.php", {
-			request : "images-list"
-		}, function(data, textStatus, jqXHR) {
-			for(var i in data) {
-				var img = new Image();
-				img.src = data[i].thumbnailUrl;
-				img.draggable = false;
+		var data = this._imageCollection.getList();
+		for(var i = 0; i < data.length; i++) {
+			var img = new Image();
+			img.src = data[i].thumbnailUrl;
+			img.draggable = false;
 
-				var figCap = document.createElement("figcaption");
-				figCap.innerHTML = that._getSlideTitleFromURL(data[i].url);
+			var figCap = document.createElement("figcaption");
+			figCap.innerHTML = this._getSlideTitleFromURL(data[i].url);
 
-				var fig = document.createElement("figure");
-				$(document.createElement("div")).append(img).appendTo(fig);
-				fig.appendChild(figCap);
+			var fig = document.createElement("figure");
+			$(document.createElement("div")).append(img).appendTo(fig);
+			fig.appendChild(figCap);
 
-				var imageContainer = document.createElement("div");
-				imageContainer.className = "image";
-				imageContainer.id = "img" + i;
-				imageContainer.draggable = true;
-				imageContainer.dataset.thumbnailUrl = data[i].thumbnailUrl;
-				imageContainer.dataset.url = data[i].url;
-				imageContainer.ondragstart = that._onGalleryImageDragStart;
-				imageContainer.appendChild(fig);
-				that._galleryContainer.append(imageContainer);
-
-			}
-		});
+			var imageContainer = document.createElement("div");
+			imageContainer.className = "image";
+			imageContainer.id = "img" + i;
+			imageContainer.draggable = true;
+			imageContainer.dataset.thumbnailUrl = data[i].thumbnailUrl;
+			imageContainer.dataset.url = data[i].url;
+			imageContainer.ondragstart = this._onGalleryImageDragStart;
+			imageContainer.appendChild(fig);
+			this._galleryContainer.append(imageContainer);
+		}
 	};
 	SlideshowDesigner.prototype._initSlides = function() {
 		this._slidesContainer.append(this._initSlides_createSlideSeparator());
@@ -124,11 +120,13 @@
 
 		var figCap = document.createElement("figcaption");
 		figCap.innerHTML = slide.title;
-		var removeLink = $(document.createElement("a")).text("X").click(this, function(e) {
+		$(document.createElement("a")).text("X").click(this, function(e) {
 			var pos = e.data._getSlideIndex(this.parentNode.parentNode.parentNode);
 			e.data.removeSlide(pos);
-		});
-		removeLink.appendTo(figCap);
+		}).appendTo(figCap);
+		$(document.createElement("a")).text("Öppna").click(this, function(e) {
+			e.data._viewer.show(e.data._getSlideIndex(this.parentNode.parentNode.parentNode));
+		}).appendTo(figCap);
 
 		var fig = document.createElement("figure");
 		var div = document.createElement("div");
