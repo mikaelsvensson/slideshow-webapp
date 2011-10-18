@@ -7,12 +7,6 @@ var slideshow = {
 			url: "slides/MS_110208_2819.JPG",
 			title: "Visiting the archipelago",
 			transition: "fade",
-			effects: [
-				{
-					type: "interlaced",
-					color: [255, 0, 0, 0.5]
-				}
-			],
 			annotations: [
 				{
 					type: "comment",
@@ -31,6 +25,12 @@ var slideshow = {
 					coord: [98, 318],
 					size: [200, 200],
 					shape: "star"
+				},
+				{
+					type: "mosaic",
+					author: "A Secret Agent",
+					coord: [465,23],
+					size: [64,64]
 				}
 			],
 			

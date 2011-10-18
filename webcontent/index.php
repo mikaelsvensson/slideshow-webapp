@@ -9,10 +9,10 @@
 
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 		<!--<script src="slideshow.js"></script>-->
-		<script src="slideshow-designer.js"></script>
-		<script src="slideshow-viewer.js"></script>
-		<script src="slide-annotations.js"></script>
-		<script src="canvastools.js"></script>
+		<script src="designer/designer.js"></script>
+		<script src="viewer/viewer-annotations.js"></script>
+		<script src="viewer/viewer-canvastools.js"></script>
+		<script src="viewer/viewer.js"></script>
 		<script src="imagecollection.js"></script>
 		<script src="index.js"></script>
 		
@@ -20,10 +20,10 @@
 	</head>
 	<body class="mode-designer">
 		<div id="designer">
-			<?php include("designmode.php"); ?>
+			<?php include("designer/designer.php"); ?>
 		</div>
 		<div id="viewer">
-			<?php include("viewer.php"); ?>
+			<?php include("viewer/viewer.php"); ?>
 		</div>
 	</body>
 </html>

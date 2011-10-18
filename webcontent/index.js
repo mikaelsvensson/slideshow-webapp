@@ -1,6 +1,9 @@
 $(document).ready(function() {
 
 	try {
+		/*
+		 * HTML5: Local storage
+		 */
 		var slideshowModel = JSON.parse(localStorage["slideshow-webapp-model"]);
 	} catch (ex) {
 		var slideshowModel = {
@@ -35,6 +38,9 @@ $(document).ready(function() {
 	$("#designer-title").text(slideshowModel.title);
 
 	$("#designer-save-button").click(slideshowModel, function(e) {
+		/*
+		 * HTML5: Local storage
+		 */
 		localStorage["slideshow-webapp-model"] = JSON.stringify(e.data);
 	});
 });
