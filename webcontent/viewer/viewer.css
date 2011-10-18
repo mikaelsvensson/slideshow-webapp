@@ -16,7 +16,7 @@ div#panelcontainer-viewer > div.panel-workarea > div {
 	-moz-box-flex: 0;
 	-webkit-box-flex: 0;
 }
-#viewer section {
+#viewer article {
 	-moz-box-flex: 1;
 	-webkit-box-flex: 1;
 	display: -moz-box;
@@ -25,11 +25,15 @@ div#panelcontainer-viewer > div.panel-workarea > div {
 	-webkit-box-orient: horizontal;
 	-moz-box-align: center;
 	-webkit-box-align: center;
+	
+	/*overflow: hidden;*/
 }
-#viewer section article {
+#viewer article section {
 	-moz-box-flex: 1;
 	-webkit-box-flex: 1;
-	overflow: auto;
+
+	position: relative;
+
 	display: -moz-box;
 	display: -webkit-box;
 	-moz-box-orient: vertical;
@@ -37,56 +41,97 @@ div#panelcontainer-viewer > div.panel-workarea > div {
 	-moz-box-align: center;
 	-webkit-box-align: center;
 }
-#viewer section article figure {
-
-	overflow: auto;
+#viewer article section figure/*, #viewer article section figcaption */{
+	/*overflow: auto;*/
+	position: absolute;
+	left: 50%;
+	top: 50%;
 }
-#viewer section article figure figcaption {
+#viewer article section figure figcaption {
+    background-color: rgba(255, 255, 255, 0.5);
+    left: 0;
+    line-height: 50px;
+    margin-top: -25px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    width: 100%;
+    
+    opacity: 0;
+    
+    -moz-transition: opacity 0.5s ease-in-out;
+    -webkit-transition: opacity 0.5s ease-in-out;
 }
-#viewer section article figure > div {
+#viewer article section figure:hover figcaption {
+	opacity: 1;
+}
+/*
+#viewer article section figure figcaption {
+}
+#viewer article section figure > div {
 	position: relative;
 }
-#viewer section article figure > div blockquote {
+*/
+#viewer article section figure /*> div */blockquote {
 	position: absolute;
 	margin: 0;
 	padding: 0;
 	/*background-color: #fff;*/
 	border-width: 15px 10px 10px 15px;
 	-moz-border-image: url("annotation-balloon-border.png") 15 10 10 15 repeat;
+	-webkit-border-image: url("annotation-balloon-border.png") 15 10 10 15 repeat;
 }
-#viewer section article figure > div blockquote span {
+#viewer article section figure /*> div */blockquote span {
 	left: -3px;
 	position: relative;
 	top: 2px;
 }
-#viewer section article figure > div img {
+#viewer article section figure /*> div */img {
 	display: block;
+	border: 1px solid #aaa;
+	box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.5);
 }
-#viewer section article figure > div svg, #viewer section article figure > div canvas {
+#viewer article section figure /*> div */svg, 
+#viewer article section figure /*> div */canvas {
 	position: absolute;
 	top: 0;
 	left: 0;
 }
-#viewer section nav {
+#viewer article nav {
 	-moz-box-flex: 0;
 	-webkit-box-flex: 0;
 }
-#viewer section nav:first-child {
+#viewer article nav:first-child {
 }
-#viewer section nav:last-child {
+#viewer article nav:last-child {
 }
 #viewer footer {
 	-moz-box-flex: 0;
 	-webkit-box-flex: 0;
+	
+	display: -moz-box;
+	display: -webkit-box;
+	-moz-box-orient: horizontal;
+	-webkit-box-orient: horizontal;
 }
-#viewer #viewer-slide-container > div {
+#viewer footer nav:first-child {
+	-moz-box-flex: 0;
+	-webkit-box-flex: 0;
+}
+#viewer footer nav:last-child {
+	-moz-box-flex: 1;
+	-webkit-box-flex: 1;
+	
+	text-align: center;
+}
+#viewer #viewer-slide-container > figure {
 	-moz-transition: opacity 1s ease-in-out;
 	-webkit-transition: opacity 1s ease-in-out;
 	opacity: 0;
 }
-#viewer #viewer-slide-container > div.hidden {
+#viewer #viewer-slide-container > figure.hidden {
 }
-#viewer #viewer-slide-container > div.visible {
+#viewer #viewer-slide-container > figure.visible {
 	opacity: 1;
 }
 #viewer .selection {

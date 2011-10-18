@@ -68,11 +68,14 @@
 			
 			var prevSlideContainer = $(this._currentSlideContainer.children()[0]);
 			prevSlideContainer.removeClass("visible");
+			setTimeout(function () {
+				prevSlideContainer.remove();
+			}, 1000);
 			
 			var img = new Image(imageData.width, imageData.height);
 			$(img).load(this, function (e) {
 				
-				var slideContainer = $(document.createElement("div"))/*.addClass("hidden")*/;
+				var slideContainer = $(document.createElement("figure"))/*.addClass("hidden")*/;
 				
 				$(this).unbind("load").appendTo(slideContainer);
 				
@@ -80,6 +83,10 @@
 				slideContainer.mousedown(canvasTools, canvasTools.onMouseDown);
 				slideContainer.mousemove(canvasTools, canvasTools.onMouseOver);
 				slideContainer.mouseup(canvasTools, canvasTools.onMouseUp);
+				slideContainer.css({
+						'margin-top': -(imageData.height/2),
+						'margin-left': -(imageData.width/2)
+						})
 				
 				e.data._canvasTools = canvasTools;
 				
@@ -87,8 +94,8 @@
 				
 				e.data._loadAnnotations();
 				setTimeout(function () {
-					//prevSlideContainer.remove();
 					slideContainer.addClass("visible");
+					slideContainer.append($(document.createElement("figcaption")).text(slideData.title));
 				}, 100);
 			}).attr("src", slideData.url);
 		}
