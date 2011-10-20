@@ -1,144 +1,109 @@
 div#panelcontainer-viewer > div.panel-workarea {
-	bottom: 10px;
-	left: 10px;
-	right: 10px;
-	top: 10px;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    top: 10px;
 }
 div#panelcontainer-viewer > div.panel-workarea > div {
-	display: -moz-box;
-	display: -webkit-box;
-	-moz-box-orient: vertical;
-	-webkit-box-orient: vertical;
-	height: 100%;
-	width: 100%;
+    -moz-box-orient: vertical;
+    display: -moz-box;
+    height: 100%;
+    width: 100%;
 }
 #viewer header {
-	-moz-box-flex: 0;
-	-webkit-box-flex: 0;
+    -moz-box-flex: 0;
 }
 #viewer article {
-	-moz-box-flex: 1;
-	-webkit-box-flex: 1;
-	display: -moz-box;
-	display: -webkit-box;
-	-moz-box-orient: horizontal;
-	-webkit-box-orient: horizontal;
-	-moz-box-align: center;
-	-webkit-box-align: center;
-	
-	/*overflow: hidden;*/
+    -moz-box-align: center;
+    -moz-box-flex: 1;
+    -moz-box-orient: horizontal;
+    display: -moz-box;
+    /*overflow: auto;*/
 }
 #viewer article section {
-	-moz-box-flex: 1;
-	-webkit-box-flex: 1;
-
-	position: relative;
-
-	display: -moz-box;
-	display: -webkit-box;
-	-moz-box-orient: vertical;
-	-webkit-box-orient: vertical;
-	-moz-box-align: center;
-	-webkit-box-align: center;
+    -moz-box-align: center;
+    -moz-box-flex: 1;
+    -moz-box-orient: horizontal;
+    display: -moz-box;
+    overflow: auto;
+    /*position: relative;
+    text-align: center;*/
 }
-#viewer article section figure/*, #viewer article section figcaption */{
-	/*overflow: auto;*/
-	position: absolute;
-	left: 50%;
-	top: 50%;
+#viewer article section figure {
+    /*left: 50%;*/
+    position: relative;
+    /*top: 50%;*/
 }
 #viewer article section figure figcaption {
+    -moz-transition: opacity 0.5s ease-in-out 0s;
     background-color: rgba(255, 255, 255, 0.5);
     left: 0;
     line-height: 50px;
     margin-top: -25px;
+    opacity: 0;
     position: absolute;
     text-align: center;
     top: 50%;
     width: 100%;
-    
-    opacity: 0;
-    
-    -moz-transition: opacity 0.5s ease-in-out;
-    -webkit-transition: opacity 0.5s ease-in-out;
 }
 #viewer article section figure:hover figcaption {
-	opacity: 1;
+    opacity: 1;
 }
-/*
-#viewer article section figure figcaption {
+#viewer article section figure blockquote {
+    -moz-border-image: url("annotation-balloon-border.png") 15 10 10 15 repeat;
+    border-width: 15px 10px 10px 15px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
 }
-#viewer article section figure > div {
-	position: relative;
+#viewer article section figure blockquote span {
+    left: -3px;
+    position: relative;
+    top: 2px;
 }
-*/
-#viewer article section figure /*> div */blockquote {
-	position: absolute;
-	margin: 0;
-	padding: 0;
-	/*background-color: #fff;*/
-	border-width: 15px 10px 10px 15px;
-	-moz-border-image: url("annotation-balloon-border.png") 15 10 10 15 repeat;
-	-webkit-border-image: url("annotation-balloon-border.png") 15 10 10 15 repeat;
+#viewer article section figure img {
+    border: 1px solid #AAAAAA;
+    box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.5);
+    display: block;
 }
-#viewer article section figure /*> div */blockquote span {
-	left: -3px;
-	position: relative;
-	top: 2px;
-}
-#viewer article section figure /*> div */img {
-	display: block;
-	border: 1px solid #aaa;
-	box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.5);
-}
-#viewer article section figure /*> div */svg, 
-#viewer article section figure /*> div */canvas {
-	position: absolute;
-	top: 0;
-	left: 0;
+#viewer article section figure svg, #viewer article section figure canvas {
+    left: 0;
+    position: absolute;
+    top: 0;
 }
 #viewer article nav {
-	-moz-box-flex: 0;
-	-webkit-box-flex: 0;
+    -moz-box-flex: 0;
 }
 #viewer article nav:first-child {
 }
 #viewer article nav:last-child {
 }
 #viewer footer {
-	-moz-box-flex: 0;
-	-webkit-box-flex: 0;
-	
-	display: -moz-box;
-	display: -webkit-box;
-	-moz-box-orient: horizontal;
-	-webkit-box-orient: horizontal;
+    -moz-box-flex: 0;
+    -moz-box-orient: horizontal;
+    display: -moz-box;
 }
 #viewer footer nav:first-child {
-	-moz-box-flex: 0;
-	-webkit-box-flex: 0;
+    -moz-box-flex: 0;
 }
 #viewer footer nav:last-child {
-	-moz-box-flex: 1;
-	-webkit-box-flex: 1;
-	
-	text-align: center;
+    -moz-box-flex: 1;
+    text-align: center;
 }
 #viewer #viewer-slide-container > figure {
-	-moz-transition: opacity 1s ease-in-out;
-	-webkit-transition: opacity 1s ease-in-out;
-	opacity: 0;
+    -moz-transition: opacity 1s ease-in-out 0s;
+    opacity: 0;
 }
 #viewer #viewer-slide-container > figure.hidden {
 }
 #viewer #viewer-slide-container > figure.visible {
-	opacity: 1;
+    opacity: 1;
 }
 #viewer .selection {
-	position: absolute;
-	background-color: rgba(100,100,100,0.2);
-	border: 1px solid rgba(100,100,100,0.5);
+    background-color: rgba(100, 100, 100, 0.2);
+    border: 1px solid rgba(100, 100, 100, 0.5);
+    position: absolute;
 }
 #viewer #viewer-annotations-buttons a {
-	padding-right: 0.5em;
+    padding-right: 0.5em;
 }

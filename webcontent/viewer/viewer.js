@@ -83,11 +83,12 @@
 				slideContainer.mousedown(canvasTools, canvasTools.onMouseDown);
 				slideContainer.mousemove(canvasTools, canvasTools.onMouseOver);
 				slideContainer.mouseup(canvasTools, canvasTools.onMouseUp);
+				/*
 				slideContainer.css({
 						'margin-top': -(imageData.height/2),
 						'margin-left': -(imageData.width/2)
 						})
-				
+				*/
 				e.data._canvasTools = canvasTools;
 				
 				e.data._currentSlideContainer.prepend(slideContainer);

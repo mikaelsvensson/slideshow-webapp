@@ -17,6 +17,7 @@
 						<figcaption></figcaption>
 					</figure>
 					-->
+					&nbsp;
 				</section>
 				<nav>
 					<p>
