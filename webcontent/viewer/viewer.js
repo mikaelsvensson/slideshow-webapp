@@ -75,7 +75,9 @@
 			var img = new Image(imageData.width, imageData.height);
 			$(img).load(this, function (e) {
 				
-				var slideContainer = $(document.createElement("figure"))/*.addClass("hidden")*/;
+				var div = $(document.createElement("figure"));
+				var slideContainer = $(document.createElement("div")).addClass("transition-wrapper");
+				slideContainer.appendTo(div);
 				
 				$(this).unbind("load").appendTo(slideContainer);
 				
@@ -83,19 +85,25 @@
 				slideContainer.mousedown(canvasTools, canvasTools.onMouseDown);
 				slideContainer.mousemove(canvasTools, canvasTools.onMouseOver);
 				slideContainer.mouseup(canvasTools, canvasTools.onMouseUp);
-				/*
-				slideContainer.css({
-						'margin-top': -(imageData.height/2),
+				
+				var w = $("#boink").width() - 16 /* scrollbar width */;
+				var h = $("#boink").height();
+				
+				div.css({
+						/*'margin-top': -(imageData.height/2),*/
 						'margin-left': -(imageData.width/2)
 						})
-				*/
+				e.data._currentSlideContainer.css({
+						'width': w,
+						'height': h
+						})
 				e.data._canvasTools = canvasTools;
 				
-				e.data._currentSlideContainer.prepend(slideContainer);
+				e.data._currentSlideContainer.prepend(div);
 				
 				e.data._loadAnnotations();
 				setTimeout(function () {
-					slideContainer.addClass("visible");
+					div.addClass("visible");
 					slideContainer.append($(document.createElement("figcaption")).text(slideData.title));
 				}, 100);
 			}).attr("src", slideData.url);
@@ -176,7 +184,7 @@
 		var balloonText = document.createElement("span");
 		balloonText.innerHTML = annotation.text;
 		balloon.appendChild(balloonText);
-		this._currentSlideContainer.children()[0].appendChild(balloon);
+		this._currentSlideContainer.children()[0].childNodes[0].appendChild(balloon);
 	};
 	
 	SlideshowViewer.prototype._loadStampAnnotation = function(annotation) {

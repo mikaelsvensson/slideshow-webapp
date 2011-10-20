@@ -83,9 +83,6 @@
 	
 	CanvasTools = function(imageEl, width, height) {
 		
-		this.disableRegionSelection();
-		this.disableCoordSelection();
-		
 		var el = document.createElement("canvas");
 		if(el && el.getContext) {
 			this.ctx = el.getContext("2d");
@@ -98,6 +95,9 @@
 		} else {
 			alert("Specified element is not a <canvas> element.");
 		}
+		
+		this.disableRegionSelection();
+		this.disableCoordSelection();
 	};
 	
 	CanvasTools.prototype._getImagePosition = function() {
@@ -164,11 +164,14 @@
 		var pos = e.data._getImagePosition();
 		self._isMouseDown = true;
 		self._latestMouseDownCoord = [e.clientX - pos.left + this.scrollLeft, e.clientY - pos.top + this.scrollTop];
+		//self._image.parentNode.classList.add("selection-mode");
 	};
 	
 	CanvasTools.prototype.onMouseUp = function(e) {
-		var pos = e.data._getImagePosition();
-		e.data._onMouseUp(e.clientX - pos.left + this.scrollLeft, e.clientY - pos.top + this.scrollTop);
+		var self = e.data;
+		var pos = self._getImagePosition();
+		//self._image.parentNode.classList.remove("selection-mode");
+		self._onMouseUp(e.clientX - pos.left + this.scrollLeft, e.clientY - pos.top + this.scrollTop);
 	};
 	CanvasTools.prototype._onMouseUp = function(x, y) {
 		if (this._isMouseDown && this.isRegionSelectionEnabled()) {
@@ -241,11 +244,13 @@
 	
 	CanvasTools.prototype.enableRegionSelection = function(onRegionSelectionCallback) {
 		this._isRegionSelectionEnabled = true;
+		this._image.parentNode.parentNode.classList.add("selection-mode");
 		this._onRegionSelectionCallback = onRegionSelectionCallback;
 	};
 	
 	CanvasTools.prototype.disableRegionSelection = function() {
 		this._isRegionSelectionEnabled = false;
+		this._image.parentNode.parentNode.classList.remove("selection-mode");
 		this._onRegionSelectionCallback = null;
 	};
 	
@@ -255,11 +260,13 @@
 	
 	CanvasTools.prototype.enableCoordSelection = function(onCoordSelectionCallback) {
 		this._isCoordSelectionEnabled = true;
+		this._image.parentNode.parentNode.classList.add("selection-mode");
 		this._onCoordSelectionCallback = onCoordSelectionCallback;
 	};
 	
 	CanvasTools.prototype.disableCoordSelection = function() {
 		this._isCoordSelectionEnabled = false;
+		this._image.parentNode.parentNode.classList.remove("selection-mode");
 		this._onCoordSelectionCallback = null;
 	};
 	

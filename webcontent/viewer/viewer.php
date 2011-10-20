@@ -10,15 +10,7 @@
 						<a href="javascript:void(0)" id="viewer-prev-button">Previous</a>
 					</p>
 				</nav>
-				<section id="viewer-slide-container">
-					<!--
-					<figure>
-						<img />
-						<figcaption></figcaption>
-					</figure>
-					-->
-					&nbsp;
-				</section>
+				<section id="boink"><div id="viewer-slide-container" style="width: 1000px; height: 1000px; position: relative;"></div></section>
 				<nav>
 					<p>
 						<a href="javascript:void(0)" id="viewer-next-button">Next</a>

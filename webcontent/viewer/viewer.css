@@ -6,26 +6,38 @@ div#panelcontainer-viewer > div.panel-workarea {
 }
 div#panelcontainer-viewer > div.panel-workarea > div {
     -moz-box-orient: vertical;
+    -webkit-box-orient: vertical;
     display: -moz-box;
+    display: -webkit-box;
     height: 100%;
     width: 100%;
 }
 #viewer header {
     -moz-box-flex: 0;
+    -webkit-box-flex: 0;
 }
 #viewer article {
     -moz-box-align: center;
+    -webkit-box-align: center;
     -moz-box-flex: 1;
+    -webkit-box-flex: 1;
     -moz-box-orient: horizontal;
+    -webkit-box-orient: horizontal;
     display: -moz-box;
-    /*overflow: auto;*/
+    display: -webkit-box;
+    overflow: hidden;
 }
 #viewer article section {
     -moz-box-align: center;
+    -webkit-box-align: center;
     -moz-box-flex: 1;
+    -webkit-box-flex: 1;
     -moz-box-orient: horizontal;
+    -webkit-box-orient: horizontal;
     display: -moz-box;
-    overflow: auto;
+    display: -webkit-box;
+    /*overflow: auto;*/
+    overflow: hidden;
     /*position: relative;
     text-align: center;*/
 }
@@ -33,9 +45,20 @@ div#panelcontainer-viewer > div.panel-workarea > div {
     /*left: 50%;*/
     position: relative;
     /*top: 50%;*/
+
+
+
+
+    left: 50%;
+    position: absolute;
+    /*top: 50%;*/
+}
+#viewer article section figure.selection-mode {
+    cursor: crosshair;
 }
 #viewer article section figure figcaption {
     -moz-transition: opacity 0.5s ease-in-out 0s;
+    -webkit-transition: opacity 0.5s ease-in-out 0s;
     background-color: rgba(255, 255, 255, 0.5);
     left: 0;
     line-height: 50px;
@@ -49,8 +72,12 @@ div#panelcontainer-viewer > div.panel-workarea > div {
 #viewer article section figure:hover figcaption {
     opacity: 1;
 }
+#viewer article section figure.selection-mode:hover figcaption {
+    opacity: 0;
+}
 #viewer article section figure blockquote {
     -moz-border-image: url("annotation-balloon-border.png") 15 10 10 15 repeat;
+    -webkit-border-image: url("annotation-balloon-border.png") 15 10 10 15 repeat;
     border-width: 15px 10px 10px 15px;
     margin: 0;
     padding: 0;
@@ -73,6 +100,7 @@ div#panelcontainer-viewer > div.panel-workarea > div {
 }
 #viewer article nav {
     -moz-box-flex: 0;
+    -webkit-box-flex: 0;
 }
 #viewer article nav:first-child {
 }
@@ -80,23 +108,40 @@ div#panelcontainer-viewer > div.panel-workarea > div {
 }
 #viewer footer {
     -moz-box-flex: 0;
+    -webkit-box-flex: 0;
     -moz-box-orient: horizontal;
+    -webkit-box-orient: horizontal;
     display: -moz-box;
+    display: -webkit-box;
 }
 #viewer footer nav:first-child {
     -moz-box-flex: 0;
+    -webkit-box-flex: 0;
 }
 #viewer footer nav:last-child {
     -moz-box-flex: 1;
+    -webkit-box-flex: 1;
     text-align: center;
 }
-#viewer #viewer-slide-container > figure {
-    -moz-transition: opacity 1s ease-in-out 0s;
+#viewer #viewer-slide-container {
+    width: 1000px;
+    height: 1000px;
+    position: relative;
+}
+
+figure .transition-wrapper {
+	position: relative;
+}
+#viewer #viewer-slide-container > figure .transition-wrapper {
+    -moz-transition: all 1s ease-in-out 0s;
+    -webkit-transition: all 1s ease-in-out 0s;
     opacity: 0;
+    top: 100px;
 }
-#viewer #viewer-slide-container > figure.hidden {
+#viewer #viewer-slide-container > figure.hidden .transition-wrapper {
 }
-#viewer #viewer-slide-container > figure.visible {
+#viewer #viewer-slide-container > figure.visible .transition-wrapper {
+	top: 0;
     opacity: 1;
 }
 #viewer .selection {
