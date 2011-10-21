@@ -7,8 +7,7 @@
 		<link rel="shortcut icon" href="/favicon.ico" />
 		<link rel="stylesheet" href="style-core.css" charset="UTF-8">
 
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-		<!--<script src="slideshow.js"></script>-->
+		<script src="utils.js"></script>
 		<script src="designer/designer.js"></script>
 		<script src="viewer/viewer-annotations.js"></script>
 		<script src="viewer/viewer-canvastools.js"></script>

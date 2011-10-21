@@ -2,7 +2,7 @@
  * @author Mikael
  */
 
-(function($) {
+(function(U) {
 
 	var DND_TRANSFERDATA_TEXTPLAIN = "text/plain";
 	var DND_TYPE_MOVE = "MOVE";
@@ -13,15 +13,15 @@
 		this._currentSlideIndex = -1;
 		this._model = slideshowModel;
 		this._imageCollection = imageCollection;
-		this._slideImage = $("#" + slideImageId)
-		this._prevButton = $("#" + prevButtonId);
-		this._nextButton = $("#" + nextButtonId);
-		this._annotationButtonsContainer = $("#" + annotationButtonsContainerId);
-		this._closeButton = $("#" + closeButtonId);
-		this._commentsList = $("#" + commentsListId);
+		this._slideImage = U.$(slideImageId)
+		this._prevButton = U.$(prevButtonId);
+		this._nextButton = U.$(nextButtonId);
+		this._annotationButtonsContainer = U.$(annotationButtonsContainerId);
+		this._closeButton = U.$(closeButtonId);
+		this._commentsList = U.$(commentsListId);
 		this._canvasTools = null;
 		
-		this._currentSlideContainer = $("#viewer-slide-container");
+		this._currentSlideContainer = U.$("viewer-slide-container");
 	};
 
 	SlideshowViewer.prototype.init = function() {
@@ -31,13 +31,13 @@
 	};
 
 	SlideshowViewer.prototype._onCloseButtonClick = function(e) {
-		e.data.hide();
+		this.hide();
 	};
 	SlideshowViewer.prototype._onNextButtonClick = function(e) {
-		e.data.gotoNextSlide();
+		this.gotoNextSlide();
 	};
 	SlideshowViewer.prototype._onPrevButtonClick = function(e) {
-		e.data.gotoPreviousSlide();
+		this.gotoPreviousSlide();
 	};
 
 	SlideshowViewer.prototype.hide = function() {
@@ -66,47 +66,54 @@
 			var slideData = this._model.slides[this._currentSlideIndex];
 			var imageData = this._imageCollection.get(slideData.url);
 			
-			var prevSlideContainer = $(this._currentSlideContainer.children()[0]);
-			prevSlideContainer.removeClass("visible");
-			setTimeout(function () {
-				prevSlideContainer.remove();
-			}, 1000);
+			if (this._currentSlideContainer.children.length > 0) {
+				var prevSlideContainer = this._currentSlideContainer.children[0];
+				prevSlideContainer.classList.remove("visible");
+				setTimeout(function () {
+					U.removeElement(prevSlideContainer);
+				}, 1000);
+			}
 			
+			var that = this;
 			var img = new Image(imageData.width, imageData.height);
-			$(img).load(this, function (e) {
+			img.onload = function (e) {
 				
-				var div = $(document.createElement("figure"));
-				var slideContainer = $(document.createElement("div")).addClass("transition-wrapper");
-				slideContainer.appendTo(div);
+				var div = U.createElement("figure");
+				var slideContainer = U.createElement("div");
+				slideContainer.classList.add("transition-wrapper");
+				div.appendChild(slideContainer);
 				
-				$(this).unbind("load").appendTo(slideContainer);
+				this.onload = null;
+				slideContainer.appendChild(this);
 				
 				var canvasTools = new CanvasTools(this);
-				slideContainer.mousedown(canvasTools, canvasTools.onMouseDown);
-				slideContainer.mousemove(canvasTools, canvasTools.onMouseOver);
-				slideContainer.mouseup(canvasTools, canvasTools.onMouseUp);
+				slideContainer.onmousedown = function(e) {
+					canvasTools.onMouseDown(e);
+				};
+				slideContainer.onmousemove = function(e) {
+					canvasTools.onMouseOver(e);
+				};
+				slideContainer.onmouseup = function (e) {
+					canvasTools.onMouseUp(e);
+				};
 				
-				var w = $("#boink").width() - 16 /* scrollbar width */;
-				var h = $("#boink").height();
+				var w = U.$("boink").offsetWidth - 16 /* scrollbar width */;
+				var h = U.$("boink").offsetHeight;
 				
-				div.css({
-						/*'margin-top': -(imageData.height/2),*/
-						'margin-left': -(imageData.width/2)
-						})
-				e.data._currentSlideContainer.css({
-						'width': w,
-						'height': h
-						})
-				e.data._canvasTools = canvasTools;
+				div.style.marginLeft = -(imageData.width/2) + "px";
+				that._currentSlideContainer.style.width = w + "px";
+				that._currentSlideContainer.style.height = h + "px";
+				that._canvasTools = canvasTools;
 				
-				e.data._currentSlideContainer.prepend(div);
+				that._currentSlideContainer.insertBefore(div, that._currentSlideContainer.firstChild);
 				
-				e.data._loadAnnotations();
+				that._loadAnnotations();
 				setTimeout(function () {
-					div.addClass("visible");
-					slideContainer.append($(document.createElement("figcaption")).text(slideData.title));
+					div.classList.add("visible");
+					slideContainer.appendChild(U.createElement("figcaption", slideData.title));
 				}, 100);
-			}).attr("src", slideData.url);
+			};
+			img.src = slideData.url;
 		}
 	};
 
@@ -118,21 +125,17 @@
 	};
 	
 	SlideshowViewer.prototype._onAddCommentButtonClick = function(e) {
-		var self = e.data;
 		var text = prompt("Din kommentar:");
-		self.addComment(text);
+		this.addComment(text);
 	};
 	SlideshowViewer.prototype._onAddMosaicButtonClick = function(e) {
-		var self = e.data;
-		self.addMosaic();
+		this.addMosaic();
 	};
 	SlideshowViewer.prototype._onAddBalloonButtonClick = function(e) {
-		var self = e.data;
-		self.addBalloon();
+		this.addBalloon();
 	};
 	SlideshowViewer.prototype._onAddStampButtonClick = function(e) {
-		var self = e.data;
-		self.addStamp();
+		this.addStamp();
 	};
 	
 	SlideshowViewer.prototype.addComment = function(text) {
@@ -169,8 +172,7 @@
 	};
 	
 	SlideshowViewer.prototype._loadCommentAnnotation = function(annotation) {
-		var li = $(document.createElement("li")).text(annotation.text);
-		this._commentsList.append(li);
+		this._commentsList.appendChild(U.createElement("li", annotation.text));
 	};
 	
 	SlideshowViewer.prototype._loadMosaicAnnotation = function(annotation) {
@@ -178,13 +180,12 @@
 	};
 	
 	SlideshowViewer.prototype._loadBalloonAnnotation = function(annotation) {
-		var balloon = document.createElement("blockquote");
+		var balloon = U.createElement("blockquote");
 		balloon.style.left = annotation.coord.x + "px";
 		balloon.style.top = annotation.coord.y + "px";
-		var balloonText = document.createElement("span");
-		balloonText.innerHTML = annotation.text;
+		var balloonText = U.createElement("span", annotation.text);
 		balloon.appendChild(balloonText);
-		this._currentSlideContainer.children()[0].childNodes[0].appendChild(balloon);
+		this._currentSlideContainer.children[0].childNodes[0].appendChild(balloon);
 	};
 	
 	SlideshowViewer.prototype._loadStampAnnotation = function(annotation) {
@@ -206,7 +207,7 @@
 	SlideshowViewer.prototype._loadAnnotations = function(annotation) {
 		var annotations = this._model.slides[this._currentSlideIndex].annotations;
 		
-		this._commentsList.children().remove();
+		//this._commentsList.innerHTML = "";
 		
 		if (annotations && annotations.length > 0) {
 			for (var i=0; i < annotations.length; i++) {
@@ -219,21 +220,43 @@
 	};
 
 	SlideshowViewer.prototype._initSlideButtons = function() {
-		this._annotationButtonsContainer.append(
-			$(document.createElement("a")).attr("href", "javascript:void(0);").text("Kommentera").click(this, this._onAddCommentButtonClick),
-			$(document.createElement("a")).attr("href", "javascript:void(0);").text("Censurera").click(this, this._onAddMosaicButtonClick),
-			$(document.createElement("a")).attr("href", "javascript:void(0);").text("Pratbubbla").click(this, this._onAddBalloonButtonClick),
-			$(document.createElement("a")).attr("href", "javascript:void(0);").text("Stämpla").click(this, this._onAddStampButtonClick)
-			);
+		
+		var that = this; 
+		
+		/*var addCommentLink = U.createElement("a", "Kommentera");
+		addCommentLink.onclick = function(e) {
+			that._onAddCommentButtonClick(e);
+		};*/
+		var addMosaicLink = U.createElement("a", "Censurera", "href", "#");
+		addMosaicLink.onclick = function(e) {
+			that._onAddMosaicButtonClick(e);
+		};
+		var addBalloonLink = U.createElement("a", "Pratbubbla", "href", "#");
+		addBalloonLink.onclick = function(e) {
+			that._onAddBalloonButtonClick(e);
+		};
+		var addStampLink = U.createElement("a", "Stämpla", "href", "#");
+		addStampLink.onclick = function(e) {
+			that._onAddStampButtonClick(e);
+		};
+		
+		U.appendChildren(this._annotationButtonsContainer, /*addCommentLink,*/ addBalloonLink, addMosaicLink, addStampLink);
 	};
 
 	SlideshowViewer.prototype._initNavigationButtons = function() {
-		this._closeButton.click(this, this._onCloseButtonClick);
-		this._prevButton.click(this, this._onPrevButtonClick);
-		this._nextButton.click(this, this._onNextButtonClick);
+		var that = this;
+		this._closeButton.onclick = function(e) {
+			that._onCloseButtonClick(e);
+		};
+		this._prevButton.onclick = function(e) {
+			that._onPrevButtonClick(e);
+		};
+		this._nextButton.onclick = function(e) {
+			that._onNextButtonClick(e);
+		};
 	};
 
 	SlideshowViewer.prototype.getModel = function() {
 		return this._model;
 	};
-})(jQuery);
+})(new Utils());

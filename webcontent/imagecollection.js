@@ -2,7 +2,7 @@
  * @author Mikael
  */
 
-(function($) {
+(function(U) {
 
 	ImageCollection = function() {
 		this._list = [];
@@ -38,4 +38,4 @@
 		return null;
 	}
 
-})(jQuery);
+})(new Utils());

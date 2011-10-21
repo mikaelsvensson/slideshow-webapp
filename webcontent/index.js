@@ -1,5 +1,7 @@
-$(document).ready(function() {
+window.onload = function() {
 
+	var U = new Utils();
+	
 	try {
 		/*
 		 * HTML5: Local storage
@@ -12,9 +14,8 @@ $(document).ready(function() {
 		};
 	}
 
-	$.getJSON("http://www.mikaelsvensson.info/slideshow/service.php", {
-		request : "images-list"
-	}, function(data, textStatus, jqXHR) {
+	U.xhrJson("http://www.mikaelsvensson.info/slideshow/service.php?request=images-list", true
+	, function(data) {
 		
 		var imageCollection = new ImageCollection();
 		
@@ -35,12 +36,12 @@ $(document).ready(function() {
 		designer.init();
 	});
 
-	$("#designer-title").text(slideshowModel.title);
+	U.$("designer-title").innerHTML = slideshowModel.title;
 
-	$("#designer-save-button").click(slideshowModel, function(e) {
+	U.$("designer-save-button").onclick = function(e) {
 		/*
 		 * HTML5: Local storage
 		 */
-		localStorage["slideshow-webapp-model"] = JSON.stringify(e.data);
-	});
-});
+		localStorage["slideshow-webapp-model"] = JSON.stringify(slideshowModel);
+	};
+};

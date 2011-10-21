@@ -2,7 +2,7 @@
  * @author Mikael
  */
 
-(function($) {
+(function(U) {
 
 	var Filters = {
 		/*
@@ -45,7 +45,7 @@
 			var d = pixelData.data;
 			var width = pixelData.width;
 			var height = pixelData.height;
-			var BLOCK_SIZE = 10;
+			var BLOCK_SIZE = 20;
 			
 			for (var x = 0; x < width; x += BLOCK_SIZE) {
 				for (var y = 0; y < height; y += BLOCK_SIZE) {
@@ -88,8 +88,8 @@
 			this.ctx = el.getContext("2d");
 			this.width = el.width = width || imageEl.width;
 			this.height = el.height = height || imageEl.height;
-
-			$(el).insertAfter(imageEl);
+			
+			imageEl.parentNode.insertBefore(el, imageEl.nextSibling);
 			this._canvas = el;
 			this._image = imageEl;
 		} else {
@@ -102,7 +102,7 @@
 	
 	CanvasTools.prototype._getImagePosition = function() {
 		if (!this._imagePos) {
-			this._imagePos = $(this._image).offset();
+			this._imagePos = { top: this._image.offsetTop, left: this._image.offsetLeft };
 		}
 		return this._imagePos;
 	};
@@ -160,18 +160,40 @@
 	};
 	
 	CanvasTools.prototype.onMouseDown = function(e) {
-		var self = e.data;
-		var pos = e.data._getImagePosition();
-		self._isMouseDown = true;
-		self._latestMouseDownCoord = [e.clientX - pos.left + this.scrollLeft, e.clientY - pos.top + this.scrollTop];
+		var mouseX, mouseY;
+	    if (e.offsetX) {
+	        mouseX = e.offsetX;
+	        mouseY = e.offsetY;
+	    }
+	    else if (e.layerX) {
+	        mouseX = e.layerX;
+	        mouseY = e.layerY;
+	    }
+		mouseX += e.target.offsetLeft;
+		mouseY += e.target.offsetTop;
+
+		//var pos = this._getImagePosition();
+		this._isMouseDown = true;
+		//this._latestMouseDownCoord = [e.clientX - pos.left/* + this.scrollLeft*/, e.clientY - pos.top/* + this.scrollTop*/];
+		this._latestMouseDownCoord = [mouseX, mouseY];
 		//self._image.parentNode.classList.add("selection-mode");
 	};
 	
 	CanvasTools.prototype.onMouseUp = function(e) {
-		var self = e.data;
-		var pos = self._getImagePosition();
-		//self._image.parentNode.classList.remove("selection-mode");
-		self._onMouseUp(e.clientX - pos.left + this.scrollLeft, e.clientY - pos.top + this.scrollTop);
+		var mouseX, mouseY;
+	    if (e.offsetX) {
+	        mouseX = e.offsetX;
+	        mouseY = e.offsetY;
+	    }
+	    else if (e.layerX) {
+	        mouseX = e.layerX;
+	        mouseY = e.layerY;
+	    }
+		mouseX += e.target.offsetLeft;
+		mouseY += e.target.offsetTop;
+		//var pos = this._getImagePosition();
+		//this._onMouseUp(e.clientX - pos.left/* + this.scrollLeft*/, e.clientY - pos.top/* + this.scrollTop*/);
+		this._onMouseUp(mouseX, mouseY);
 	};
 	CanvasTools.prototype._onMouseUp = function(x, y) {
 		if (this._isMouseDown && this.isRegionSelectionEnabled()) {
@@ -194,14 +216,38 @@
 	};
 	
 	CanvasTools.prototype.onMouseOver = function(e) {
-		var pos = e.data._getImagePosition();
-		var self = e.data._onMouseOver(e.clientX - pos.left + this.scrollLeft, e.clientY - pos.top + this.scrollTop);
-		console.log("client["+e.clientX+","+e.clientY+"]");
+		/*if (e.target == this._canvas)*/ {
+			var pos = this._getImagePosition();
+			var mouseX, mouseY;
+		    if (e.offsetX) {
+		        mouseX = e.offsetX;
+		        mouseY = e.offsetY;
+		    }
+		    else if (e.layerX) {
+		        mouseX = e.layerX;
+		        mouseY = e.layerY;
+		    }
+			mouseX += e.target.offsetLeft;
+			mouseY += e.target.offsetTop;
+			
+			//this._onMouseOver(e.clientX - pos.left/* + this.scrollLeft*/, e.clientY - pos.top/* + this.scrollTop*/);
+			//console.log("client["+e.clientX+","+e.clientY+"]");
+			this._onMouseOver(mouseX, mouseY);
+			
+			/*
+			if (this._lastTarget) {
+				this._lastTarget.style.border = "none";
+			}
+			this._lastTarget = e.target;
+			this._lastTarget.style.border = "1px solid red";
+			console.log("client["+mouseX+","+mouseY+"]" + e.target + " " + e.currentTarget);
+			*/
+		}
 	};
 	CanvasTools.prototype._onMouseOver = function(x, y) {
 		if (this._isMouseDown && this.isRegionSelectionEnabled()) {
 			
-			console.log("start["+this._latestMouseDownCoord[0]+","+this._latestMouseDownCoord[1]+" now["+x+","+y+"]");
+			console.log("start["+this._latestMouseDownCoord[0]+"],"+this._latestMouseDownCoord[1]+" now["+x+","+y+"]");
 			var regionX1 = Math.min(this._latestMouseDownCoord[0], x);
 			var regionY1 = Math.min(this._latestMouseDownCoord[1], y);
 			var regionX2 = Math.max(this._latestMouseDownCoord[0], x);
@@ -214,7 +260,7 @@
 			};
 			this._selection = region;
 			if (!this._selectionMarker) {
-				this._selectionMarker = document.createElement("div");
+				this._selectionMarker = U.createElement("div");
 				this._selectionMarker.className = "selection";
 				this._image.parentNode.appendChild(this._selectionMarker);
 			}
@@ -273,4 +319,4 @@
 	CanvasTools.prototype.isCoordSelectionEnabled = function() {
 		return this._isCoordSelectionEnabled == true;
 	};
-})(jQuery);
+})(new Utils());

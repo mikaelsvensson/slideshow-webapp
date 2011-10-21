@@ -2,7 +2,7 @@
  * @author Mikael
  */
 
-(function($) {
+(function(U) {
 
 	CommentAnnotation = function (text, author) {
 		this.text = text;
@@ -25,4 +25,4 @@
 		this.shape = shape;
 	}
 
-})(jQuery);
+})(new Utils());

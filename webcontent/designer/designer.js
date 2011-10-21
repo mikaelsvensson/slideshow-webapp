@@ -2,7 +2,7 @@
  * @author Mikael
  */
 
-(function($) {
+(function(U) {
 
 	/*
 	 * HTML5: Drag and drop
@@ -17,10 +17,10 @@
 		this._model = slideshowModel;
 		this._imageCollection = imageCollection;
 		this._viewer = viewer;
-		this._slidesContainer = $("#" + slidesContainerId);
-		this._galleryContainer = $("#" + galleryContainerId);
-		this._localFilesDropContainer = $("#" + localFilesDropContainerId);
-		this._buttonContainer = $("#" + buttonContainerId);
+		this._slidesContainer = U.$(slidesContainerId);
+		this._galleryContainer = U.$(galleryContainerId);
+		this._localFilesDropContainer = U.$(localFilesDropContainerId);
+		this._buttonContainer = U.$(buttonContainerId);
 	};
 
 	SlideshowDesigner.prototype.init = function() {
@@ -36,14 +36,14 @@
 			img.src = data[i].thumbnailUrl;
 			img.draggable = false;
 
-			var figCap = document.createElement("figcaption");
-			figCap.innerHTML = this._getSlideTitleFromURL(data[i].url);
+			var figCap = U.createElement("figcaption", this._getSlideTitleFromURL(data[i].url));
 
-			var fig = document.createElement("figure");
-			$(document.createElement("div")).append(img).appendTo(fig);
-			fig.appendChild(figCap);
+			var fig = U.createElement("figure");
+			var div = U.createElement("div");
+			div.appendChild(img);
+			U.appendChildren(fig, div, figCap);
 
-			var imageContainer = document.createElement("div");
+			var imageContainer = U.createElement("div");
 			imageContainer.className = "image";
 			imageContainer.id = "img" + i;
 
@@ -60,11 +60,11 @@
 			imageContainer.dataset.url = data[i].url;
 
 			imageContainer.appendChild(fig);
-			this._galleryContainer.append(imageContainer);
+			this._galleryContainer.appendChild(imageContainer);
 		}
 	};
 	SlideshowDesigner.prototype._initSlides = function() {
-		this._slidesContainer.append(this._initSlides_createSlideSeparator());
+		this._slidesContainer.appendChild(this._initSlides_createSlideSeparator());
 		for(var i in this._model.slides) {
 			this._initSlides_addSlide(this._model.slides[i], i);
 		}
@@ -80,7 +80,7 @@
 	};
 
 	SlideshowDesigner.prototype._initSlides_createSlideSeparator = function() {
-		var sep = document.createElement("div");
+		var sep = U.createElement("div");
 		sep.className = "sep";
 		
 		var that = this;
@@ -130,32 +130,38 @@
 	};
 
 	SlideshowDesigner.prototype._initSlides_addSlide = function(slide, slideIndex) {
-		this._slidesContainer.append(this._createSlideUI(slide, slideIndex), this._initSlides_createSlideSeparator());
+		U.appendChildren(this._slidesContainer, 
+				this._createSlideUI(slide, slideIndex), 
+				this._initSlides_createSlideSeparator());
 	};
 
 	SlideshowDesigner.prototype._createSlideUI = function(slide, slideIndex) {
+		var that = this;
+		
 		var img = new Image();
 		img.src = slide.thumbnailUrl;
 		img.draggable = false;
 
-		var figCap = document.createElement("figcaption");
+		var figCap = U.createElement("figcaption");
 		figCap.innerHTML = slide.title;
-		$(document.createElement("a")).text("X").click(this, function(e) {
-			var pos = e.data._getSlideIndex(this.parentNode.parentNode.parentNode);
-			e.data.removeSlide(pos);
-		}).appendTo(figCap);
-		$(document.createElement("a")).text("Öppna").click(this, function(e) {
-			e.data._viewer.show(e.data._getSlideIndex(this.parentNode.parentNode.parentNode));
-		}).appendTo(figCap);
+		var closeLink = U.createElement("a", "X", "href", "#");
+		closeLink.onclick = function (e) {
+			var pos = that._getSlideIndex(this.parentNode.parentNode.parentNode);
+			that.removeSlide(pos);
+		};
+		var openLink = U.createElement("a", "Öppna", "href", "#");
+		openLink.onclick = function (e) {
+			that._viewer.show(that._getSlideIndex(this.parentNode.parentNode.parentNode));
+		};
+		U.appendChildren(figCap, closeLink, openLink);
 
-		var fig = document.createElement("figure");
-		var div = document.createElement("div");
+		var fig = U.createElement("figure");
+		var div = U.createElement("div");
 		div.appendChild(img);
 		fig.appendChild(div);
 		fig.appendChild(figCap);
 
-		var that = this;
-		var imageContainer = document.createElement("div");
+		var imageContainer = U.createElement("div");
 		imageContainer.className = "image";
 		/*
 		 * HTML5: Dataset (custom element attributes)
@@ -212,9 +218,9 @@
 		}
 		if(this._slidesContainer) {
 			var slideEl = this._createSlideUI(slide, newSlideIndex);
-			var sepEl = this._slidesContainer.children()[newSlideIndex * 2];
-			this._slidesContainer.get(0).insertBefore(this._initSlides_createSlideSeparator(), sepEl.nextSibling);
-			this._slidesContainer.get(0).insertBefore(slideEl, sepEl.nextSibling);
+			var sepEl = this._slidesContainer.children[newSlideIndex * 2];
+			this._slidesContainer.insertBefore(this._initSlides_createSlideSeparator(), sepEl.nextSibling);
+			this._slidesContainer.insertBefore(slideEl, sepEl.nextSibling);
 		}
 		return slide;
 	};
@@ -223,8 +229,9 @@
 			this._model.slides.splice(slideIndex, 1);
 		}
 		if(this._slidesContainer) {
-			var slideEl = this._slidesContainer.children()[slideIndex * 2 + 1];
-			$(slideEl.nextSibling).add(slideEl).remove();
+			var slideEl = this._slidesContainer.children[slideIndex * 2 + 1];
+			U.removeElement(slideEl.nextSibling);
+			U.removeElement(slideEl);
 		}
 	};
 	SlideshowDesigner.prototype.moveSlide = function(currentSlideIndex, newSlideIndex) {
@@ -233,14 +240,14 @@
 			this._model.slides.splice(newSlideIndex, 0, slide);
 
 			if(this._slidesContainer) {
-				var slideEl = this._slidesContainer.children()[currentSlideIndex * 2 + 1];
-				var sepEl = this._slidesContainer.children()[newSlideIndex * 2];
-				this._slidesContainer.get(0).insertBefore(slideEl.nextSibling, sepEl.nextSibling);
-				this._slidesContainer.get(0).insertBefore(slideEl, sepEl.nextSibling);
+				var slideEl = this._slidesContainer.children[currentSlideIndex * 2 + 1];
+				var sepEl = this._slidesContainer.children[newSlideIndex * 2];
+				this._slidesContainer.insertBefore(slideEl.nextSibling, sepEl.nextSibling);
+				this._slidesContainer.insertBefore(slideEl, sepEl.nextSibling);
 			}
 		}
 	};
 	SlideshowDesigner.prototype.getModel = function() {
 		return this._model;
 	};
-})(jQuery);
+})(new Utils());
