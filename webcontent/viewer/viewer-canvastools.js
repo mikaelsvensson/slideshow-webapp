@@ -110,14 +110,33 @@
 	CanvasTools.prototype.addSvgCircle = function(region) {
 		var x = region.x + (region.width / 2);
 		var y = region.y + (region.height / 2);
-		var r = Math.max(region.height, region.width) / 2;
-		var svgSource = [
+		var r = Math.min(region.height, region.width) / 2;
+		/*var svgSource = [
 				'<svg xmlns="http://www.w3.org/2000/svg" version="1.1">',
 				  '<circle cx="', x, '" cy="', y, '" r="', r, '" style="fill:yellow;stroke:purple;stroke-width:2"/>',
 				'</svg>'
 				].join("");
-		$(svgSource).appendTo(this._canvas.parentNode);
+		$(svgSource).appendTo()*/
+		var SVG_NS = "http://www.w3.org/2000/svg";
+		var el = U.createElementNS(SVG_NS, "svg", 
+				"version", "1.1");
+				
+				
+		var defs = U.createElementNS(SVG_NS, "defs"); 
+		var radGrad = U.createElementNS(SVG_NS, "radialGradient", "id", "bg", "cx", "50%", "cy", "50%", "fx", "50%", "fy", "50%");
+		var colorStop1 = U.createElementNS(SVG_NS, "stop", "offset", "60%", "style", "stop-color: rgba(253, 208, 23, 0.0)");
+		var colorStop2 = U.createElementNS(SVG_NS, "stop", "offset", "100%", "style", "stop-color: rgba(253, 208, 23, 0.5)");
+		U.appendChildren(radGrad, colorStop1, colorStop2);
+		defs.appendChild(radGrad);
+		var circle = U.createElementNS(SVG_NS, "circle", 
+				"cx", x, 
+				"cy", y, 
+				"r", r, 
+				"style", "fill: url(#bg); stroke-width: 0.1em; stroke: rgba(253, 208, 23, 1.0)");
+		U.appendChildren(el, defs, circle);
+		this._canvas.parentNode.appendChild(el);
 	};
+	
 	
 	CanvasTools.prototype.grayscale = function() {
 		var region = {
@@ -169,8 +188,10 @@
 	        mouseX = e.layerX;
 	        mouseY = e.layerY;
 	    }
-		mouseX += e.target.offsetLeft;
-		mouseY += e.target.offsetTop;
+	    if (e.target.offsetLeft) {
+			mouseX += e.target.offsetLeft;
+			mouseY += e.target.offsetTop;
+	    }
 
 		//var pos = this._getImagePosition();
 		this._isMouseDown = true;
@@ -189,8 +210,10 @@
 	        mouseX = e.layerX;
 	        mouseY = e.layerY;
 	    }
-		mouseX += e.target.offsetLeft;
-		mouseY += e.target.offsetTop;
+	    if (e.target.offsetLeft) {
+			mouseX += e.target.offsetLeft;
+			mouseY += e.target.offsetTop;
+	    }
 		//var pos = this._getImagePosition();
 		//this._onMouseUp(e.clientX - pos.left/* + this.scrollLeft*/, e.clientY - pos.top/* + this.scrollTop*/);
 		this._onMouseUp(mouseX, mouseY);
@@ -227,8 +250,10 @@
 		        mouseX = e.layerX;
 		        mouseY = e.layerY;
 		    }
-			mouseX += e.target.offsetLeft;
-			mouseY += e.target.offsetTop;
+		    if (e.target.offsetLeft) {
+				mouseX += e.target.offsetLeft;
+				mouseY += e.target.offsetTop;
+		    }
 			
 			//this._onMouseOver(e.clientX - pos.left/* + this.scrollLeft*/, e.clientY - pos.top/* + this.scrollTop*/);
 			//console.log("client["+e.clientX+","+e.clientY+"]");
@@ -247,7 +272,7 @@
 	CanvasTools.prototype._onMouseOver = function(x, y) {
 		if (this._isMouseDown && this.isRegionSelectionEnabled()) {
 			
-			console.log("start["+this._latestMouseDownCoord[0]+"],"+this._latestMouseDownCoord[1]+" now["+x+","+y+"]");
+			console.log("start["+this._latestMouseDownCoord[0]+","+this._latestMouseDownCoord[1]+"] now["+x+","+y+"]");
 			var regionX1 = Math.min(this._latestMouseDownCoord[0], x);
 			var regionY1 = Math.min(this._latestMouseDownCoord[1], y);
 			var regionX2 = Math.max(this._latestMouseDownCoord[0], x);
