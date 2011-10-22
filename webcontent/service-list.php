@@ -7,7 +7,7 @@ function serviceImagesList($extension = null, $thumbnailExtension = null) {
 			if (substr($file, -strlen($extension)) == $extension && substr($file, -strlen($thumbnailExtension)) != $thumbnailExtension) {
 				$url = "slides/" . $file;
 				
-				$imageInfo = getimagesize($url);
+				//$imageInfo = getimagesize($url);
 				
 				$thumbnailUrl = null;
 				$name = substr($file, 0, -strlen($extension));
@@ -18,9 +18,9 @@ function serviceImagesList($extension = null, $thumbnailExtension = null) {
 				} 
 				$entry = array(
 						"url" => $url, 
-						"thumbnailUrl" => $thumbnailUrl,
+						"thumbnailUrl" => $thumbnailUrl/*,
 						"width" => $imageInfo[0],
-						"height" => $imageInfo[1]);
+						"height" => $imageInfo[1]*/);
 				$response[] = $entry;
 			}
 		}

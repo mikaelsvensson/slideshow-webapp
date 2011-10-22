@@ -5,7 +5,7 @@
 		<div style="clear: both"></div>
 	</div>
 	<div class="panel panel-toolbar panel-bottom" id="designer-buttons">
-		<button type="button" id="designer-save-button">Spara</button>
+		<button type="button" class="save" id="designer-save-button"></button>
 	</div>
 	<div class="panel panel-toolbar panel-left">
 		<div class="flexpanel-container">

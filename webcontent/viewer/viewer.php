@@ -1,6 +1,7 @@
 <div class="panelcontainer panelcontainer-rows" id="panelcontainer-viewer">
 	<div class="panel panel-workarea" style="overflow:hidden">
 		<div>
+			<!-- HTML5: Markup (header, article, nav, section, footer) -->
 			<header>
 				<h1>Visningsläge</h1>
 			</header>

@@ -89,11 +89,17 @@
 		 * HTML5: Drag and drop events and the data transfer object.
 		 */
 		sep.ondragenter = function(e) {
+			/*
+			 * HTML5: CSS class list API
+			 */
 			e.target.classList.add("drag-over");
 			e.preventDefault();
 			return false;
 		};
 		sep.ondragleave = function(e) {
+			/*
+			 * HTML5: CSS class list API
+			 */
 			e.target.classList.remove("drag-over");
 		};
 		sep.ondragover = function(e) {
@@ -137,22 +143,28 @@
 
 	SlideshowDesigner.prototype._createSlideUI = function(slide, slideIndex) {
 		var that = this;
+
+		var showSlide = function(e) {
+			that._viewer.show(that._getSlideIndex(this.parentNode.parentNode.parentNode));
+		};
 		
 		var img = new Image();
 		img.src = slide.thumbnailUrl;
 		img.draggable = false;
+		img.ondblclick = showSlide;
 
 		var figCap = U.createElement("figcaption");
 		figCap.innerHTML = slide.title;
-		var closeLink = U.createElement("a", "X", "href", "#");
+		figCap.ondblclick = showSlide;
+		var closeLink = U.createElement("button");
+		closeLink.classList.add("delete");
 		closeLink.onclick = function (e) {
 			var pos = that._getSlideIndex(this.parentNode.parentNode.parentNode);
 			that.removeSlide(pos);
 		};
-		var openLink = U.createElement("a", "Öppna", "href", "#");
-		openLink.onclick = function (e) {
-			that._viewer.show(that._getSlideIndex(this.parentNode.parentNode.parentNode));
-		};
+		var openLink = U.createElement("button");
+		openLink.classList.add("fullsize");
+		openLink.onclick = showSlide; 
 		U.appendChildren(figCap, closeLink, openLink);
 
 		var fig = U.createElement("figure");

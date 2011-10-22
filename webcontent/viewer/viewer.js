@@ -7,6 +7,11 @@
 	var DND_TRANSFERDATA_TEXTPLAIN = "text/plain";
 	var DND_TYPE_MOVE = "MOVE";
 	var DND_TYPE_ADD = "ADD";
+	
+	var ANNOTATION_TYPE_COMMENT = "comment";
+	var ANNOTATION_TYPE_BALLOON = "balloon";
+	var ANNOTATION_TYPE_MOSAIC = "mosaic";
+	var ANNOTATION_TYPE_STAMP = "stamp";
 
 	var URL_TO_SLIDE_TITLE_PATTERN = /\/?(\w+)\.\w{2,5}$/;
 	SlideshowViewer = function(slideshowModel, imageCollection, slideImageId,  prevButtonId, nextButtonId, annotationButtonsContainerId, closeButtonId, commentsListId) {
@@ -68,6 +73,9 @@
 			
 			if (this._currentSlideContainer.children.length > 0) {
 				var prevSlideContainer = this._currentSlideContainer.children[0];
+				/*
+				 * HTML5: CSS class list API
+				 */
 				prevSlideContainer.classList.remove("visible");
 				setTimeout(function () {
 					U.removeElement(prevSlideContainer);
@@ -75,14 +83,20 @@
 			}
 			
 			var that = this;
-			var img = new Image(imageData.width, imageData.height);
+			var img = new Image(/*imageData.width, imageData.height*/);
 			img.onload = function (e) {
 				
-				var div = U.createElement("figure");
 				var slideContainer = U.createElement("div");
+				/*
+				 * HTML5: Markup
+				 */
+				var div = U.createElement("figure");
+				/*
+				 * HTML5: CSS class list API
+				 */
 				slideContainer.classList.add("transition-wrapper");
-				div.appendChild(slideContainer);
 				
+				div.appendChild(slideContainer);
 				this.onload = null;
 				slideContainer.appendChild(this);
 				
@@ -100,7 +114,7 @@
 				var w = U.$("boink").offsetWidth - 16 /* scrollbar width */;
 				var h = U.$("boink").offsetHeight;
 				
-				div.style.marginLeft = -(imageData.width/2) + "px";
+				div.style.marginLeft = -(this.width/*imageData.width*//2) + "px";
 				that._currentSlideContainer.style.width = w + "px";
 				that._currentSlideContainer.style.height = h + "px";
 				that._canvasTools = canvasTools;
@@ -109,8 +123,20 @@
 				
 				that._loadAnnotations();
 				setTimeout(function () {
+					/*
+					 * HTML5: CSS class list API
+					 */
 					div.classList.add("visible");
-					slideContainer.appendChild(U.createElement("figcaption", slideData.title));
+					/*
+					 * HTML5: Markup
+					 */
+					var caption = U.createElement("figcaption", slideData.title);
+					/*
+					 * HTML5: CSS class list API
+					 */
+					caption.classList.add("message");
+					
+					slideContainer.appendChild(caption);
 				}, 100);
 			};
 			img.src = slideData.url;
@@ -139,24 +165,24 @@
 	};
 	
 	SlideshowViewer.prototype.addComment = function(text) {
-		this._addAnnotation(new CommentAnnotation(text, "Anonymous"));
+		this._addAnnotation({type: ANNOTATION_TYPE_COMMENT, text: text, author: "Anonymous"});
 	};
 	SlideshowViewer.prototype.addMosaic = function() {
 		this._canvasTools.enableRegionSelection( { fn: function (region) {
-			this._addAnnotation(new MosaicAnnotation("", "Anonymous", region));
+			this._addAnnotation({type: ANNOTATION_TYPE_MOSAIC, text: "", author: "Anonymous", region: region});
 			this._canvasTools.disableRegionSelection();
 		}, scope: this } );
 	};
 	SlideshowViewer.prototype.addBalloon = function() {
 		this._canvasTools.enableCoordSelection( { fn: function (coord) {
 			var text = prompt("Din kommentar:");
-			this._addAnnotation(new BalloonAnnotation(text, "Anonymous", coord));
+			this._addAnnotation({type: ANNOTATION_TYPE_BALLOON, text: text, author: "Anonymous", coord: coord});
 			this._canvasTools.disableCoordSelection();
 		}, scope: this } );
 	};
 	SlideshowViewer.prototype.addStamp = function(text) {
 		this._canvasTools.enableRegionSelection( { fn: function (region) {
-			this._addAnnotation(new StampAnnotation("", "Anonymous", region));
+			this._addAnnotation({type: ANNOTATION_TYPE_STAMP, text: "", author: "Anonymous", region: region});
 			this._canvasTools.disableRegionSelection();
 		}, scope: this } );
 	};
@@ -193,13 +219,16 @@
 	};
 	
 	SlideshowViewer.prototype._loadAnnotation = function(annotation) {
-		if (annotation instanceof CommentAnnotation) {
+		if (annotation.type == ANNOTATION_TYPE_COMMENT) {
 			this._loadCommentAnnotation(annotation);
-		} else if (annotation instanceof BalloonAnnotation) {
+			
+		} else if (annotation.type == ANNOTATION_TYPE_BALLOON) {
 			this._loadBalloonAnnotation(annotation);
-		} else if (annotation instanceof MosaicAnnotation) {
+			
+		} else if (annotation.type == ANNOTATION_TYPE_MOSAIC) {
 			this._loadMosaicAnnotation(annotation);
-		} else if (annotation instanceof StampAnnotation) {
+			
+		} else if (annotation.type == ANNOTATION_TYPE_STAMP) {
 			this._loadStampAnnotation(annotation);
 		}
 	};
@@ -227,22 +256,30 @@
 		addCommentLink.onclick = function(e) {
 			that._onAddCommentButtonClick(e);
 		};*/
-		var addMosaicLink = U.createElement("a", "Censurera", "href", "#");
-		addMosaicLink.onclick = function(e) {
+		var addMosaicLink = this._createAnnotationButton("Censurera", "Censurera del av bild: Klicka först här och markera sedan området i bilden.", function(e) {
 			that._onAddMosaicButtonClick(e);
-		};
-		var addBalloonLink = U.createElement("a", "Pratbubbla", "href", "#");
-		addBalloonLink.onclick = function(e) {
+		});
+		var addBalloonLink = this._createAnnotationButton("Pratbubbla", "Lägga till pratbubbla: Klicka först här och sedan på önskad plats i bilden.", function(e) {
 			that._onAddBalloonButtonClick(e);
-		};
-		var addStampLink = U.createElement("a", "Stämpla", "href", "#");
-		addStampLink.onclick = function(e) {
+		});
+		var addStampLink = this._createAnnotationButton("Gloria", "Lägga till gul gloria: Klicka först här och markera sedan området i bilden som glorian ska läggas på.", function(e) {
 			that._onAddStampButtonClick(e);
-		};
+		});
 		
 		U.appendChildren(this._annotationButtonsContainer, /*addCommentLink,*/ addBalloonLink, addMosaicLink, addStampLink);
 	};
 
+	SlideshowViewer.prototype._createAnnotationButton = function(text, helpText, clickHandler) {
+		var linkEl = U.createElement("a", "", "href", "#");
+		var textEl = U.createElement("span", text);
+		var helpTextEl = U.createElement("span", helpText);
+		var helpTextWrapperEl = U.createElement("span");
+		helpTextWrapperEl.appendChild(helpTextEl)
+		textEl.appendChild(helpTextWrapperEl);
+		linkEl.appendChild(textEl);
+		linkEl.onclick = clickHandler;
+		return linkEl;
+	};
 	SlideshowViewer.prototype._initNavigationButtons = function() {
 		var that = this;
 		this._closeButton.onclick = function(e) {

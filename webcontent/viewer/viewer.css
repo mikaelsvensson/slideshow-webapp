@@ -5,18 +5,28 @@ div#panelcontainer-viewer > div.panel-workarea {
     top: 10px;
 }
 div#panelcontainer-viewer > div.panel-workarea > div {
+	/*
+	 * CSS3: Flexible Box Layout Module
+	 */
     -moz-box-orient: vertical;
     -webkit-box-orient: vertical;
     display: -moz-box;
     display: -webkit-box;
+
     height: 100%;
     width: 100%;
 }
 #viewer header {
+	/*
+	 * CSS3: Flexible Box Layout Module
+	 */
     -moz-box-flex: 0;
     -webkit-box-flex: 0;
 }
 #viewer article {
+	/*
+	 * CSS3: Flexible Box Layout Module
+	 */
     -moz-box-align: center;
     -webkit-box-align: center;
     -moz-box-flex: 1;
@@ -25,9 +35,13 @@ div#panelcontainer-viewer > div.panel-workarea > div {
     -webkit-box-orient: horizontal;
     display: -moz-box;
     display: -webkit-box;
+
     overflow: hidden;
 }
 #viewer article section {
+	/*
+	 * CSS3: Flexible Box Layout Module
+	 */
     -moz-box-align: center;
     -webkit-box-align: center;
     -moz-box-flex: 1;
@@ -36,48 +50,48 @@ div#panelcontainer-viewer > div.panel-workarea > div {
     -webkit-box-orient: horizontal;
     display: -moz-box;
     display: -webkit-box;
-    /*overflow: auto;*/
+
     overflow: hidden;
-    /*position: relative;
-    text-align: center;*/
 }
 #viewer article section figure {
-    /*left: 50%;*/
-    position: relative;
-    /*top: 50%;*/
-
-
-
-
     left: 50%;
     position: absolute;
-    /*top: 50%;*/
 }
 #viewer article section figure.selection-mode {
     cursor: crosshair;
 }
 #viewer article section figure figcaption {
+	/*
+	 * CSS3: CSS Transitions Module Level 3
+	 */
     -moz-transition: opacity 0.5s ease-in-out 0s;
     -webkit-transition: opacity 0.5s ease-in-out 0s;
-    background-color: rgba(255, 255, 255, 0.5);
-    left: 0;
-    line-height: 50px;
+    
+    left: 5%;
     margin-top: -25px;
     opacity: 0;
     position: absolute;
-    text-align: center;
     top: 50%;
-    width: 100%;
+    width: 90%;
+
+	background-color: #fff;
+	text-align: center;
+	padding: 1em 0;
+	color: #555;
 }
 #viewer article section figure:hover figcaption {
-    opacity: 1;
+    opacity: 0.9;
 }
 #viewer article section figure.selection-mode:hover figcaption {
     opacity: 0;
 }
 #viewer article section figure blockquote {
+	/*
+	 * CSS3: CSS Backgrounds and Borders Module Level 3
+	 */
     -moz-border-image: url("annotation-balloon-border.png") 15 10 10 15 repeat;
     -webkit-border-image: url("annotation-balloon-border.png") 15 10 10 15 repeat;
+    
     border-width: 15px 10px 10px 15px;
     margin: 0;
     padding: 0;
@@ -99,6 +113,9 @@ div#panelcontainer-viewer > div.panel-workarea > div {
     top: 0;
 }
 #viewer article nav {
+	/*
+	 * CSS3: Flexible Box Layout Module
+	 */
     -moz-box-flex: 0;
     -webkit-box-flex: 0;
 }
@@ -107,6 +124,9 @@ div#panelcontainer-viewer > div.panel-workarea > div {
 #viewer article nav:last-child {
 }
 #viewer footer {
+	/*
+	 * CSS3: Flexible Box Layout Module
+	 */
     -moz-box-flex: 0;
     -webkit-box-flex: 0;
     -moz-box-orient: horizontal;
@@ -115,12 +135,19 @@ div#panelcontainer-viewer > div.panel-workarea > div {
     display: -webkit-box;
 }
 #viewer footer nav:first-child {
+	/*
+	 * CSS3: Flexible Box Layout Module
+	 */
     -moz-box-flex: 0;
     -webkit-box-flex: 0;
 }
 #viewer footer nav:last-child {
+	/*
+	 * CSS3: Flexible Box Layout Module
+	 */
     -moz-box-flex: 1;
     -webkit-box-flex: 1;
+
     text-align: center;
 }
 #viewer #viewer-slide-container {
@@ -133,24 +160,40 @@ figure .transition-wrapper {
 	position: relative;
 }
 #viewer #viewer-slide-container > figure .transition-wrapper {
+	/*
+	 * CSS3: CSS Transitions Module Level 3
+	 */
     -moz-transition: all 1s ease-in-out 0s;
     -webkit-transition: all 1s ease-in-out 0s;
+    
+	/*
+	 * CSS3: Flexible Box Layout Module
+	 */
+    -moz-transform: rotate(5deg) scale(1.3);
+    -webkit-transform: rotate(5deg) scale(1.3);
+    
     opacity: 0;
     top: 100px;
-    -moz-transform: rotate(10deg) scale(1.5);
-    -webkit-transform: rotate(10deg) scale(1.5);
 }
 #viewer #viewer-slide-container > figure.hidden .transition-wrapper {
 }
 #viewer #viewer-slide-container > figure.visible .transition-wrapper {
-	top: 0;
-    opacity: 1;
+	/*
+	 * CSS3: CSS 2D Transforms Module Level 3
+	 */
     -moz-transform: none;
     -webkit-transform: none;
+    
+	top: 0;
+    opacity: 1;
 }
 #viewer .selection {
+	/*
+	 * CSS3: CSS Color Module Level 3
+	 */
     background-color: rgba(100, 100, 100, 0.2);
     border: 1px solid rgba(100, 100, 100, 0.5);
+    
     position: absolute;
 }
 #viewer #viewer-annotations-buttons a {

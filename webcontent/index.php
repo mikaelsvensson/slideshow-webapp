@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<!-- HTML5: Markup (meta, doctype) --> 
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
@@ -9,12 +10,11 @@
 
 		<script src="utils.js"></script>
 		<script src="designer/designer.js"></script>
-		<script src="viewer/viewer-annotations.js"></script>
 		<script src="viewer/viewer-canvastools.js"></script>
 		<script src="viewer/viewer.js"></script>
 		<script src="imagecollection.js"></script>
 		<script src="index.js"></script>
-		
+<script src="http://localhost/socket.io/socket.io.js"></script>
 		<title>Slide Show</title>
 	</head>
 	<body class="mode-designer">

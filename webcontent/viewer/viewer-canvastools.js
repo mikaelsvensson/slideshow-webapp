@@ -83,8 +83,14 @@
 	
 	CanvasTools = function(imageEl, width, height) {
 		
+		/*
+		 * HTML5: Markup
+		 */
 		var el = document.createElement("canvas");
 		if(el && el.getContext) {
+			/*
+			 * HTML Canvas 2D Context
+			 */
 			this.ctx = el.getContext("2d");
 			this.width = el.width = width || imageEl.width;
 			this.height = el.height = height || imageEl.height;
@@ -111,17 +117,13 @@
 		var x = region.x + (region.width / 2);
 		var y = region.y + (region.height / 2);
 		var r = Math.min(region.height, region.width) / 2;
-		/*var svgSource = [
-				'<svg xmlns="http://www.w3.org/2000/svg" version="1.1">',
-				  '<circle cx="', x, '" cy="', y, '" r="', r, '" style="fill:yellow;stroke:purple;stroke-width:2"/>',
-				'</svg>'
-				].join("");
-		$(svgSource).appendTo()*/
 		var SVG_NS = "http://www.w3.org/2000/svg";
+		
+		/*
+		 * SVG
+		 */
 		var el = U.createElementNS(SVG_NS, "svg", 
 				"version", "1.1");
-				
-				
 		var defs = U.createElementNS(SVG_NS, "defs"); 
 		var radGrad = U.createElementNS(SVG_NS, "radialGradient", "id", "bg", "cx", "50%", "cy", "50%", "fx", "50%", "fy", "50%");
 		var colorStop1 = U.createElementNS(SVG_NS, "stop", "offset", "60%", "style", "stop-color: rgba(253, 208, 23, 0.0)");
@@ -145,6 +147,9 @@
 			width : this.width,
 			height : this.height
 		}
+		/*
+		 * HTML Canvas 2D Context
+		 */
 		this.ctx.drawImage(this._image, region.x, region.y, region.width, region.height, region.x, region.y, region.width, region.height)
 		this.ctx.putImageData(
 				Filters.grayscale(this._getPixelData(region)),
@@ -154,6 +159,9 @@
 	
 	CanvasTools.prototype.applyInterlaceFilter = function(region) {
 		region = this._createRegion(region);
+		/*
+		 * HTML Canvas 2D Context
+		 */
 		this.ctx.drawImage(this._image, region.x, region.y, region.width, region.height, region.x, region.y, region.width, region.height)
 		this.ctx.putImageData(
 				Filters.interlace(this._getPixelData(region)),
@@ -162,6 +170,9 @@
 	};
 	CanvasTools.prototype.applyMosaicFilter = function(region) {
 		region = this._createRegion(region);
+		/*
+		 * HTML Canvas 2D Context
+		 */
 		this.ctx.drawImage(this._image, region.x, region.y, region.width, region.height, region.x, region.y, region.width, region.height)
 		this.ctx.putImageData(
 				Filters.mosaic(this._getPixelData(region)),
@@ -170,6 +181,9 @@
 	};
 	
 	CanvasTools.prototype._getPixelData = function(region) {
+		/*
+		 * HTML Canvas 2D Context
+		 */
 		return this.ctx.getImageData(region.x || 0, region.y || 0, region.width || this.width, region.height || this.height);
 	};
 
@@ -178,7 +192,7 @@
 		this._canvas.parentNode.removeChild(this._canvas);
 	};
 	
-	CanvasTools.prototype.onMouseDown = function(e) {
+	CanvasTools.prototype._getMouseCoord = function(e) {
 		var mouseX, mouseY;
 	    if (e.offsetX) {
 	        mouseX = e.offsetX;
@@ -192,33 +206,20 @@
 			mouseX += e.target.offsetLeft;
 			mouseY += e.target.offsetTop;
 	    }
-
-		//var pos = this._getImagePosition();
+		return [mouseX, mouseY];
+	};
+	
+	CanvasTools.prototype.onMouseDown = function(e) {
 		this._isMouseDown = true;
-		//this._latestMouseDownCoord = [e.clientX - pos.left/* + this.scrollLeft*/, e.clientY - pos.top/* + this.scrollTop*/];
-		this._latestMouseDownCoord = [mouseX, mouseY];
-		//self._image.parentNode.classList.add("selection-mode");
+		this._latestMouseDownCoord = this._getMouseCoord(e);
 	};
 	
 	CanvasTools.prototype.onMouseUp = function(e) {
-		var mouseX, mouseY;
-	    if (e.offsetX) {
-	        mouseX = e.offsetX;
-	        mouseY = e.offsetY;
-	    }
-	    else if (e.layerX) {
-	        mouseX = e.layerX;
-	        mouseY = e.layerY;
-	    }
-	    if (e.target.offsetLeft) {
-			mouseX += e.target.offsetLeft;
-			mouseY += e.target.offsetTop;
-	    }
-		//var pos = this._getImagePosition();
-		//this._onMouseUp(e.clientX - pos.left/* + this.scrollLeft*/, e.clientY - pos.top/* + this.scrollTop*/);
-		this._onMouseUp(mouseX, mouseY);
+		this._onMouseUp(this._getMouseCoord(e));
 	};
-	CanvasTools.prototype._onMouseUp = function(x, y) {
+	CanvasTools.prototype._onMouseUp = function(coord) {
+		var x = coord[0];
+		var y = coord[1];
 		if (this._isMouseDown && this.isRegionSelectionEnabled()) {
 			if (this._selection) {
 				if (this._onRegionSelectionCallback) {
@@ -239,37 +240,11 @@
 	};
 	
 	CanvasTools.prototype.onMouseOver = function(e) {
-		/*if (e.target == this._canvas)*/ {
-			var pos = this._getImagePosition();
-			var mouseX, mouseY;
-		    if (e.offsetX) {
-		        mouseX = e.offsetX;
-		        mouseY = e.offsetY;
-		    }
-		    else if (e.layerX) {
-		        mouseX = e.layerX;
-		        mouseY = e.layerY;
-		    }
-		    if (e.target.offsetLeft) {
-				mouseX += e.target.offsetLeft;
-				mouseY += e.target.offsetTop;
-		    }
-			
-			//this._onMouseOver(e.clientX - pos.left/* + this.scrollLeft*/, e.clientY - pos.top/* + this.scrollTop*/);
-			//console.log("client["+e.clientX+","+e.clientY+"]");
-			this._onMouseOver(mouseX, mouseY);
-			
-			/*
-			if (this._lastTarget) {
-				this._lastTarget.style.border = "none";
-			}
-			this._lastTarget = e.target;
-			this._lastTarget.style.border = "1px solid red";
-			console.log("client["+mouseX+","+mouseY+"]" + e.target + " " + e.currentTarget);
-			*/
-		}
+		this._onMouseOver(this._getMouseCoord(e));
 	};
-	CanvasTools.prototype._onMouseOver = function(x, y) {
+	CanvasTools.prototype._onMouseOver = function(coord) {
+		var x = coord[0];
+		var y = coord[1];
 		if (this._isMouseDown && this.isRegionSelectionEnabled()) {
 			
 			console.log("start["+this._latestMouseDownCoord[0]+","+this._latestMouseDownCoord[1]+"] now["+x+","+y+"]");
@@ -315,12 +290,18 @@
 	
 	CanvasTools.prototype.enableRegionSelection = function(onRegionSelectionCallback) {
 		this._isRegionSelectionEnabled = true;
+		/*
+		 * HTML5: CSS class list API
+		 */
 		this._image.parentNode.parentNode.classList.add("selection-mode");
 		this._onRegionSelectionCallback = onRegionSelectionCallback;
 	};
 	
 	CanvasTools.prototype.disableRegionSelection = function() {
 		this._isRegionSelectionEnabled = false;
+		/*
+		 * HTML5: CSS class list API
+		 */
 		this._image.parentNode.parentNode.classList.remove("selection-mode");
 		this._onRegionSelectionCallback = null;
 	};
@@ -331,12 +312,18 @@
 	
 	CanvasTools.prototype.enableCoordSelection = function(onCoordSelectionCallback) {
 		this._isCoordSelectionEnabled = true;
+		/*
+		 * HTML5: CSS class list API
+		 */
 		this._image.parentNode.parentNode.classList.add("selection-mode");
 		this._onCoordSelectionCallback = onCoordSelectionCallback;
 	};
 	
 	CanvasTools.prototype.disableCoordSelection = function() {
 		this._isCoordSelectionEnabled = false;
+		/*
+		 * HTML5: CSS class list API
+		 */
 		this._image.parentNode.parentNode.classList.remove("selection-mode");
 		this._onCoordSelectionCallback = null;
 	};

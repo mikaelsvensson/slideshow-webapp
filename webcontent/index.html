@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!-- HTML5: Markup (meta, doctype) -->
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" href="style-core.css" charset="UTF-8">
+		<script src="utils.js"></script>
+		<script src="designer/designer.js"></script>
+		<script src="viewer/viewer-canvastools.js"></script>
+		<script src="viewer/viewer.js"></script>
+		<script src="imagecollection.js"></script>
+		<script src="index.js"></script>
+		<script src="socket.io.js"></script>
+		<title>Slide Show</title>
+	</head>
+	<body class="mode-designer">
+		<div id="designer">
+			<div class="panelcontainer panelcontainer-rows" id="panelcontainer-designmode">
+				<div class="panel panel-workarea">
+					<h1>Bildspel <strong id="designer-title"></strong></h1>
+					<div id="designer-images" class="slides"></div>
+					<div style="clear: both"></div>
+				</div>
+				<div class="panel panel-toolbar panel-bottom" id="designer-buttons">
+					<button type="button" class="save" id="designer-save-button"></button>
+				</div>
+				<div class="panel panel-toolbar panel-left">
+					<div class="flexpanel-container">
+						<div class="flexpanel-top">
+							<h1>Galleri</h1>
+							<p>
+								Dra bilder från galleriet till rätt plats i bildspelet.
+							</p>
+						</div>
+						<div class="flexpanel-center">
+							<div id="designer-availableimages" class="slides"></div>
+						</div>
+						<div class="flexpanel-bottom">
+							<div id="designer-gallery-droparea">
+								Dra hit bildfiler från din dator för att lägga till bilden i galleriet.
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="viewer">
+			<div class="panelcontainer panelcontainer-rows" id="panelcontainer-viewer">
+				<div class="panel panel-workarea" style="overflow:hidden">
+					<div>
+						<!-- HTML5: Markup (header, article, nav, section, footer) -->
+						<header>
+							<h1>Visningsläge</h1>
+						</header>
+						<article>
+							<nav>
+								<p>
+									<a href="javascript:void(0)" id="viewer-prev-button">Previous</a>
+								</p>
+							</nav>
+							<section id="boink">
+								<div id="viewer-slide-container" style="width: 1000px; height: 1000px; position: relative;"></div>
+							</section>
+							<nav>
+								<p>
+									<a href="javascript:void(0)" id="viewer-next-button">Next</a>
+								</p>
+							</nav>
+						</article>
+						<footer>
+							<nav>
+								<p>
+									<a href="javascript:void(0)" id="viewer-close-button">Stäng</a>
+								</p>
+							</nav>
+							<nav id="viewer-annotations-buttons"></nav>
+						</footer>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

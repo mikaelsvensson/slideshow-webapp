@@ -11,21 +11,38 @@ div.panelcontainer, div.panel-workarea {
 div.panelcontainer-cols {
 }
 div.panelcontainer-rows {
+	/*
+	 * CSS3: Flexible Box Layout Module
+	 */
 	-moz-box-orient: vertical;
 	-webkit-box-orient: vertical;
 	-moz-box-align: stretch;
 	-webkit-box-align: stretch;
+	
 	height: 600px;
 	height: 100%;
 }
 div.panel {
+	/*
+	 * CSS3: Flexible Box Layout Module
+	 */
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
+    /*
+     * CSS3 Basic User Interface Module
+     */
     box-sizing: border-box;
-    border: 1px solid #ccc;
+    /*
+     * CSS Backgrounds and Borders Module Level 3
+     */
     border-radius: 10px 10px 10px 10px;
+    /*
+     * CSS Image Values and Replaced Content Module Level 3
+     */
     background-image: -moz-linear-gradient(#ddd, #fff 2em);
     background-image: -webkit-linear-gradient(#ddd, #fff 2em);
+    
+    border: 1px solid #ccc;
     margin: 0px;
     padding: 10px;
 }
@@ -57,23 +74,37 @@ div.panel-workarea {
 
 
 div.panel div.flexpanel-container {
+	/*
+	 * CSS3: Flexible Box Layout Module
+	 */
     -moz-box-orient: vertical;
     -webkit-box-orient: vertical;
     display: -moz-box;
     display: -webkit-box;
+    
     height: 100%;
     width: 100%;
 }
 div.flexpanel-top {
+	/*
+	 * CSS3: Flexible Box Layout Module
+	 */
 	-moz-box-flex: 0;
 	-webkit-box-flex: 0;
 }
 div.flexpanel-center {
+	/*
+	 * CSS3: Flexible Box Layout Module
+	 */
 	-moz-box-flex: 1;
 	-webkit-box-flex: 1;
+	
 	overflow: auto;
 }
 div.flexpanel-bottom {
+	/*
+	 * CSS3: Flexible Box Layout Module
+	 */
 	-moz-box-flex: 0;
 	-webkit-box-flex: 0;
 }
