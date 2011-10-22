@@ -26,8 +26,8 @@
  */
 @import url(http://fonts.googleapis.com/css?family=Permanent+Marker|Corben:700|Shadows+Into+Light|UnifrakturCook:700|Rock+Salt|Chewy|Special+Elite|UnifrakturMaguntia|Black+Ops+One|Sancreek);
 @import url(style-panel.css);
-@import url(designer/designer.css);
-@import url(viewer/viewer.css);
+@import url(designer.css);
+@import url(viewer.css);
 body {
 	font-family: "Open Sans", sans-serif;
 	margin: 0;
