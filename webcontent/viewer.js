@@ -14,10 +14,10 @@
 	var ANNOTATION_TYPE_STAMP = "stamp";
 
 	var URL_TO_SLIDE_TITLE_PATTERN = /\/?(\w+)\.\w{2,5}$/;
-	SlideshowViewer = function(slideshowModel, imageCollection, slideImageId,  prevButtonId, nextButtonId, annotationButtonsContainerId, closeButtonId, commentsListId) {
-		this._currentSlideIndex = -1;
-		this._model = slideshowModel;
-		this._imageCollection = imageCollection;
+	SlideshowViewer = function(/*slideshowModel, imageCollection, */slideImageId,  prevButtonId, nextButtonId, annotationButtonsContainerId, closeButtonId, commentsListId) {
+		/*this._currentSlideIndex = -1;*/
+		/*this._model = slideshowModel;*/
+		/*this._imageCollection = imageCollection;*/
 		this._slideImage = U.$(slideImageId)
 		this._prevButton = U.$(prevButtonId);
 		this._nextButton = U.$(nextButtonId);
@@ -29,6 +29,19 @@
 		this._currentSlideContainer = U.$("viewer-slide-container");
 	};
 
+	SlideshowViewer.prototype.setSlideshow = function(slideshowModel) {
+		this._initSlide();
+		this._initSlideButtons();
+		this._initNavigationButtons();
+	};
+	
+	SlideshowViewer.prototype.setSlide = function (slideIndex, slide) {
+		this._model.slides[slideIndex] = slide;
+		if (this._currentSlideIndex == slideIndex) {
+			this.reloadAnnotations();
+		}		
+	};
+	
 	SlideshowViewer.prototype.init = function() {
 		this._initSlide();
 		this._initSlideButtons();
@@ -36,30 +49,54 @@
 	};
 
 	SlideshowViewer.prototype._onCloseButtonClick = function(e) {
-		this.hide();
+		this.end();
 	};
 	SlideshowViewer.prototype._onNextButtonClick = function(e) {
-		this.gotoNextSlide();
+		if (this._isController) {
+			this.gotoNextSlide();
+		}
 	};
 	SlideshowViewer.prototype._onPrevButtonClick = function(e) {
-		this.gotoPreviousSlide();
+		if (this._isController) {
+			this.gotoPreviousSlide();
+		}
 	};
 
-	SlideshowViewer.prototype.hide = function() {
+	SlideshowViewer.prototype.end = function(silent) {
 		/*
 		 * HTML5: CSS class list API
 		 */
 		document.body.classList.remove("mode-viewer");
 		document.body.classList.add("mode-designer");
+		
+		if (this._isController) {
+			document.body.classList.remove("mode-viewer-controller");
+			if (!silent) {
+				socket.emit("slideshow-end");
+			}
+		} else {
+			if (!silent) {
+				socket.emit("slideshow-leave", this._presenterId);
+			}
+		}
 	};
-	SlideshowViewer.prototype.show = function(initialSlideIndex) {
+	SlideshowViewer.prototype.start = function(slideshowModel, initialSlideIndex, presenterId /*isController*/) {
 		/*
 		 * HTML5: CSS class list API
 		 */
 		document.body.classList.add("mode-viewer");
 		document.body.classList.remove("mode-designer");
 		
-		if(initialSlideIndex >= 0) {
+		this._currentSlideIndex = -1;
+		this._model = slideshowModel;
+		this._presenterId = presenterId;
+		this._isController = !(presenterId > 0);
+		if (this._isController) {
+			document.body.classList.add("mode-viewer-controller");
+			socket.emit("slideshow-start", this._model, initialSlideIndex);
+		}
+		
+		if (initialSlideIndex >= 0) {
 			this.gotoSlide(initialSlideIndex);
 		};
 	};
@@ -68,8 +105,12 @@
 		{
 			this._currentSlideIndex = slideIndex;
 			
+			if (this._isController) {
+				socket.emit("slideshow-gotoslide", this._currentSlideIndex);
+			}
+			
 			var slideData = this._model.slides[this._currentSlideIndex];
-			var imageData = this._imageCollection.get(slideData.url);
+			/*var imageData = this._imageCollection.get(slideData.url);*/
 			
 			if (this._currentSlideContainer.children.length > 0) {
 				var prevSlideContainer = this._currentSlideContainer.children[0];
@@ -87,6 +128,7 @@
 			img.onload = function (e) {
 				
 				var slideContainer = U.createElement("div");
+				
 				/*
 				 * HTML5: Markup
 				 */
@@ -97,8 +139,11 @@
 				slideContainer.classList.add("transition-wrapper");
 				
 				div.appendChild(slideContainer);
+				
 				this.onload = null;
 				slideContainer.appendChild(this);
+				var annotationContainer = U.createElement("div");
+				slideContainer.appendChild(annotationContainer); /* generic annotation container */
 				
 				var canvasTools = new CanvasTools(this);
 				slideContainer.onmousedown = function(e) {
@@ -121,7 +166,7 @@
 				
 				that._currentSlideContainer.insertBefore(div, that._currentSlideContainer.firstChild);
 				
-				that._loadAnnotations();
+				that._loadAnnotations(annotationContainer);
 				setTimeout(function () {
 					/*
 					 * HTML5: CSS class list API
@@ -163,38 +208,62 @@
 	SlideshowViewer.prototype._onAddStampButtonClick = function(e) {
 		this.addStamp();
 	};
+	SlideshowViewer.prototype._onRemoveAnnotationsButtonClick = function(e) {
+		this.removeAnnotations();
+	};
 	
 	SlideshowViewer.prototype.addComment = function(text) {
-		this._addAnnotation({type: ANNOTATION_TYPE_COMMENT, text: text, author: "Anonymous"});
+		this.addAnnotation({type: ANNOTATION_TYPE_COMMENT, text: text, author: "Anonymous"});
 	};
 	SlideshowViewer.prototype.addMosaic = function() {
 		this._canvasTools.enableRegionSelection( { fn: function (region) {
-			this._addAnnotation({type: ANNOTATION_TYPE_MOSAIC, text: "", author: "Anonymous", region: region});
+			this.addAnnotation({type: ANNOTATION_TYPE_MOSAIC, text: "", author: "Anonymous", region: region});
 			this._canvasTools.disableRegionSelection();
 		}, scope: this } );
 	};
 	SlideshowViewer.prototype.addBalloon = function() {
 		this._canvasTools.enableCoordSelection( { fn: function (coord) {
 			var text = prompt("Din kommentar:");
-			this._addAnnotation({type: ANNOTATION_TYPE_BALLOON, text: text, author: "Anonymous", coord: coord});
+			this.addAnnotation({type: ANNOTATION_TYPE_BALLOON, text: text, author: "Anonymous", coord: coord});
 			this._canvasTools.disableCoordSelection();
 		}, scope: this } );
 	};
 	SlideshowViewer.prototype.addStamp = function(text) {
 		this._canvasTools.enableRegionSelection( { fn: function (region) {
-			this._addAnnotation({type: ANNOTATION_TYPE_STAMP, text: "", author: "Anonymous", region: region});
+			this.addAnnotation({type: ANNOTATION_TYPE_STAMP, text: "", author: "Anonymous", region: region});
 			this._canvasTools.disableRegionSelection();
 		}, scope: this } );
 	};
 	
-	SlideshowViewer.prototype._addAnnotation = function(annotation) {
-		var annotations = this._model.slides[this._currentSlideIndex].annotations;
-		if (!annotations) {
-			annotations = [];
-			this._model.slides[this._currentSlideIndex].annotations = annotations;
+	SlideshowViewer.prototype.addAnnotation = function(annotation) {
+		if (this._isController) {
+			var annotations = this._model.slides[this._currentSlideIndex].annotations;
+			if (!annotations) {
+				annotations = [];
+				this._model.slides[this._currentSlideIndex].annotations = annotations;
+			}
+			annotations.push(annotation);
+			
+			this.reloadAnnotations();
+			
+			socket.emit("slide-update", this._currentSlideIndex, this._model.slides[this._currentSlideIndex]);
+		} else {
+			socket.emit("slideshow-addannotation-request", this._presenterId, this._currentSlideIndex, annotation);
 		}
-		annotations.push(annotation);
-		this._loadAnnotations();
+	};
+	
+	SlideshowViewer.prototype.removeAnnotations = function() {
+		if (this._isController) {
+			if (confirm("Är du säker på att du vill ta bort alla kommentarer från bilden?")) {
+				this._model.slides[this._currentSlideIndex].annotations = [];
+				
+				this.reloadAnnotations();
+				
+				socket.emit("slide-update", this._currentSlideIndex, this._model.slides[this._currentSlideIndex]);
+			}
+		} else {
+			alert("Tyvärr kan bara presentatören ta bort kommentarer. Ledsen.");
+		}
 	};
 	
 	SlideshowViewer.prototype._loadCommentAnnotation = function(annotation) {
@@ -205,42 +274,81 @@
 		this._canvasTools.applyMosaicFilter(annotation.region);
 	};
 	
-	SlideshowViewer.prototype._loadBalloonAnnotation = function(annotation) {
+	SlideshowViewer.prototype._loadBalloonAnnotation = function(annotation, container) {
 		var balloon = U.createElement("blockquote");
 		balloon.style.left = annotation.coord.x + "px";
 		balloon.style.top = annotation.coord.y + "px";
 		var balloonText = U.createElement("span", annotation.text);
 		balloon.appendChild(balloonText);
-		this._currentSlideContainer.children[0].childNodes[0].appendChild(balloon);
+		container.appendChild(balloon);
 	};
 	
-	SlideshowViewer.prototype._loadStampAnnotation = function(annotation) {
-		this._canvasTools.addSvgCircle(annotation.region);
+	SlideshowViewer.prototype._loadStampAnnotation = function(annotation, container) {
+		this._addSvgCircle(annotation.region, container);
 	};
 	
-	SlideshowViewer.prototype._loadAnnotation = function(annotation) {
+	SlideshowViewer.prototype._addSvgCircle = function(region, container) {
+		var x = region.x + (region.width / 2);
+		var y = region.y + (region.height / 2);
+		var r = Math.min(region.height, region.width) / 2;
+		var SVG_NS = "http://www.w3.org/2000/svg";
+		
+		/*
+		 * SVG
+		 */
+		var el = U.createElementNS(SVG_NS, "svg", 
+				"version", "1.1");
+		var defs = U.createElementNS(SVG_NS, "defs"); 
+		var radGrad = U.createElementNS(SVG_NS, "radialGradient", "id", "bg", "cx", "50%", "cy", "50%", "fx", "50%", "fy", "50%");
+		var colorStop1 = U.createElementNS(SVG_NS, "stop", "offset", "60%", "style", "stop-color: rgba(253, 208, 23, 0.0)");
+		var colorStop2 = U.createElementNS(SVG_NS, "stop", "offset", "100%", "style", "stop-color: rgba(253, 208, 23, 0.5)");
+		U.appendChildren(radGrad, colorStop1, colorStop2);
+		defs.appendChild(radGrad);
+		var circle = U.createElementNS(SVG_NS, "circle", 
+				"cx", x, 
+				"cy", y, 
+				"r", r, 
+				"style", "fill: url(#bg); stroke-width: 0.1em; stroke: rgba(253, 208, 23, 1.0)");
+		U.appendChildren(el, defs, circle);
+		container.appendChild(el);
+	};
+	
+	SlideshowViewer.prototype._loadAnnotation = function(annotation, container) {
 		if (annotation.type == ANNOTATION_TYPE_COMMENT) {
 			this._loadCommentAnnotation(annotation);
 			
 		} else if (annotation.type == ANNOTATION_TYPE_BALLOON) {
-			this._loadBalloonAnnotation(annotation);
+			this._loadBalloonAnnotation(annotation, container);
 			
 		} else if (annotation.type == ANNOTATION_TYPE_MOSAIC) {
 			this._loadMosaicAnnotation(annotation);
 			
 		} else if (annotation.type == ANNOTATION_TYPE_STAMP) {
-			this._loadStampAnnotation(annotation);
+			this._loadStampAnnotation(annotation, container);
 		}
 	};
 	
-	SlideshowViewer.prototype._loadAnnotations = function(annotation) {
+	SlideshowViewer.prototype.reloadAnnotations = function() {
+		var container = this._currentSlideContainer.children[0].children[0].children[2];
+		this._clearAnnotations(container);
+		this._loadAnnotations(container);
+	};
+	
+	SlideshowViewer.prototype._clearAnnotations = function(container) {
+		var childCount = container.children.length;
+		while (childCount-- > 0) {
+			container.children[0].parentNode.removeChild(container.children[0]);
+		}
+	};
+	
+	SlideshowViewer.prototype._loadAnnotations = function(container) {
 		var annotations = this._model.slides[this._currentSlideIndex].annotations;
 		
 		//this._commentsList.innerHTML = "";
 		
 		if (annotations && annotations.length > 0) {
 			for (var i=0; i < annotations.length; i++) {
-				this._loadAnnotation(annotations[i]);
+				this._loadAnnotation(annotations[i], container);
 			}
 		}
 	};
@@ -265,8 +373,11 @@
 		var addStampLink = this._createAnnotationButton("Gloria", "Lägga till gul gloria: Klicka först här och markera sedan området i bilden som glorian ska läggas på.", function(e) {
 			that._onAddStampButtonClick(e);
 		});
+		var removeAnnotationsLink = this._createAnnotationButton("Ta bort", "Ta bort alla censueringar, pratbubblor och glorior i aktuell bild.", function(e) {
+			that._onRemoveAnnotationsButtonClick(e);
+		});
 		
-		U.appendChildren(this._annotationButtonsContainer, /*addCommentLink,*/ addBalloonLink, addMosaicLink, addStampLink);
+		U.appendChildren(this._annotationButtonsContainer, /*addCommentLink,*/ addBalloonLink, addMosaicLink, addStampLink, removeAnnotationsLink);
 	};
 
 	SlideshowViewer.prototype._createAnnotationButton = function(text, helpText, clickHandler) {

@@ -1,0 +1,14 @@
+Start the Node.js server
+------------------------
+
+D:\Internet\Projekt\slideshow-webapp>nodeJSmon-windows.exe node.js/server.js
+
+Required Node.js modules
+------------------------
+connect
+express
+node-mime
+node-static
+socket.io
+socket.io-client
+uglify-js

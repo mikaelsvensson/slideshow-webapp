@@ -199,3 +199,25 @@ figure .transition-wrapper {
 #viewer #viewer-annotations-buttons a {
     padding-right: 0.5em;
 }
+
+body:not(.mode-viewer-controller) #viewer-prev-button, body:not(.mode-viewer-controller) #viewer-next-button, body:not(.mode-viewer-controller) header h1 {
+	display: none;	
+}
+
+body:not(.mode-viewer-controller) #panelcontainer-viewer div.panel.panel-workarea a {
+	color: orange;
+}
+body:not(.mode-viewer-controller) #panelcontainer-viewer div.panel.panel-workarea article section figure img {
+	border-color: #777;
+}
+body:not(.mode-viewer-controller) #panelcontainer-viewer div.panel.panel-workarea {
+	
+	background-color: #000;
+    /*
+     * CSS Image Values and Replaced Content Module Level 3
+     */
+    background-image: -moz-linear-gradient(#222, #333 2em);
+    background-image: -webkit-linear-gradient(#222, #333 2em);
+    
+    border: 1px solid #444;
+}

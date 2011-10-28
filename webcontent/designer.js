@@ -145,7 +145,7 @@
 		var that = this;
 
 		var showSlide = function(e) {
-			that._viewer.show(that._getSlideIndex(this.parentNode.parentNode.parentNode));
+			that._viewer.start(that._model, that._getSlideIndex(this.parentNode.parentNode.parentNode));
 		};
 		
 		var img = new Image();

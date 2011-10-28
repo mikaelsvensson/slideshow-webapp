@@ -113,33 +113,6 @@
 		return this._imagePos;
 	};
 	
-	CanvasTools.prototype.addSvgCircle = function(region) {
-		var x = region.x + (region.width / 2);
-		var y = region.y + (region.height / 2);
-		var r = Math.min(region.height, region.width) / 2;
-		var SVG_NS = "http://www.w3.org/2000/svg";
-		
-		/*
-		 * SVG
-		 */
-		var el = U.createElementNS(SVG_NS, "svg", 
-				"version", "1.1");
-		var defs = U.createElementNS(SVG_NS, "defs"); 
-		var radGrad = U.createElementNS(SVG_NS, "radialGradient", "id", "bg", "cx", "50%", "cy", "50%", "fx", "50%", "fy", "50%");
-		var colorStop1 = U.createElementNS(SVG_NS, "stop", "offset", "60%", "style", "stop-color: rgba(253, 208, 23, 0.0)");
-		var colorStop2 = U.createElementNS(SVG_NS, "stop", "offset", "100%", "style", "stop-color: rgba(253, 208, 23, 0.5)");
-		U.appendChildren(radGrad, colorStop1, colorStop2);
-		defs.appendChild(radGrad);
-		var circle = U.createElementNS(SVG_NS, "circle", 
-				"cx", x, 
-				"cy", y, 
-				"r", r, 
-				"style", "fill: url(#bg); stroke-width: 0.1em; stroke: rgba(253, 208, 23, 1.0)");
-		U.appendChildren(el, defs, circle);
-		this._canvas.parentNode.appendChild(el);
-	};
-	
-	
 	CanvasTools.prototype.grayscale = function() {
 		var region = {
 			x : 0,

@@ -37,6 +37,9 @@ body {
 	overflow: hidden;
 	font-size: 0.9em;
 }
+a {
+	color: 
+}
 body > div {
 	display: none;
 }
@@ -168,6 +171,7 @@ button.save {
 
 a {
 	text-decoration: none;
+	color: blue;
 }
 a > span {
 	position: relative;
