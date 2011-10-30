@@ -3,9 +3,11 @@ var http = require("http");
 var nodestatic = require("node-static");
 var socketio = require("socket.io");
 
+var CLIENT_ROOT = "../client/";
+
 var clients = {};
 
-var staticRoot = new nodestatic.Server("../webcontent", { cache: 0 } );
+var staticRoot = new nodestatic.Server(CLIENT_ROOT, { cache: 0, customContentTypes: { "manifest": "text/cache-manifest" } } );
 var staticContentServer = http.createServer(function (req, res) {
 	req.addListener("end", function () {
 		staticRoot.serve(req, res);
@@ -75,7 +77,7 @@ webSocketServer.sockets.on("connection", function (socket) {
 	});
 	
 	socket.on("image-list", function (responseCallback) {
-		var files = fs.readdirSync("../webcontent/slides");
+		var files = fs.readdirSync(CLIENT_ROOT + "slides");
 		console.log(files);
 		var response = [];
 		for (var i=0; i < files.length; i++) {
