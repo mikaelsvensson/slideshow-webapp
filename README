@@ -12,3 +12,7 @@ node-static
 socket.io
 socket.io-client
 uglify-js
+
+Add this line to /slideshow-webapp/server/node_modules/node-static/lib/node-static/mime.js:
+"ogg": "audio/ogg"
+"manifest": "text/cache-manifest"

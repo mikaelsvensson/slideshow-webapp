@@ -5,11 +5,11 @@ var socketio = require("socket.io");
 
 var clients = {};
 
-var staticRoot = new nodestatic.Server("../webcontent");
+var staticRoot = new nodestatic.Server("../webcontent", { cache: 0 } );
 var staticContentServer = http.createServer(function (req, res) {
 	req.addListener("end", function () {
 		staticRoot.serve(req, res);
-	})
+	});
 }).listen(80);
 
 var logClients = function()
@@ -64,9 +64,6 @@ webSocketServer.sockets.on("connection", function (socket) {
 	
 	clients["client" + socket.id] = { "socket": socket };
 	
-	socket.on("message", function (msg) {
-		console.log("Received " + msg);
-	});
 	socket.on("disconnect", function () {
 		console.log("Someone left the group. Sad.");
 		
@@ -76,6 +73,7 @@ webSocketServer.sockets.on("connection", function (socket) {
 		
 		broadcastUserList(socket);
 	});
+	
 	socket.on("image-list", function (responseCallback) {
 		var files = fs.readdirSync("../webcontent/slides");
 		console.log(files);
@@ -107,17 +105,6 @@ webSocketServer.sockets.on("connection", function (socket) {
 		
 		broadcastUserList(socket);
 	});
-	/*
-	socket.on("logout", function (data) {
-		console.log(data.name + " has left the group. Sad.");
-		
-		slideshowEnd(socket);
-		
-		delete clients["client" + socket.id];
-		
-		broadcastUserList(socket);
-	});
-	*/
 	socket.on("slideshow-join", function (id, responseCallback) {
 		console.log("Client " + socket.id + " wants to join the presentation managed by " + id);
 		

@@ -17,7 +17,7 @@
 				// CIE luminance for the RGB
 				// The human eye is bad at seeing red and blue, so we de-emphasize them.
 				var v = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-				d[i] = d[i + 1] = d[i + 2] = v
+				d[i] = d[i + 1] = d[i + 2] = v;
 			}
 			return pixelData;
 		},
@@ -36,7 +36,7 @@
 				{
 					var v = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 					v *= 0.5;
-					d[i] = d[i + 1] = d[i + 2] = v
+					d[i] = d[i + 1] = d[i + 2] = v;
 				}
 			}
 			return pixelData;
@@ -119,7 +119,7 @@
 			y : 0,
 			width : this.width,
 			height : this.height
-		}
+		};
 		/*
 		 * HTML Canvas 2D Context
 		 */
@@ -153,7 +153,15 @@
 				region.y);
 	};
 	
+	CanvasTools.prototype.clear = function(region) {
+		region = region || {};
+		/*
+		 * HTML Canvas 2D Context
+		 */
+		return this.ctx.clearRect(region.x || 0, region.y || 0, region.width || this.width, region.height || this.height);
+	};
 	CanvasTools.prototype._getPixelData = function(region) {
+		region = region || {};
 		/*
 		 * HTML Canvas 2D Context
 		 */

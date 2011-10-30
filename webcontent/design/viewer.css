@@ -101,6 +101,7 @@ div#panelcontainer-viewer > div.panel-workarea > div {
     left: -3px;
     position: relative;
     top: 2px;
+    font-family: SlideshowQuote;
 }
 #viewer article section figure img {
     border: 1px solid #AAAAAA;
@@ -204,12 +205,30 @@ body:not(.mode-viewer-controller) #viewer-prev-button, body:not(.mode-viewer-con
 	display: none;	
 }
 
+/*
+ * CSS3: Selectors
+ */
 body:not(.mode-viewer-controller) #panelcontainer-viewer div.panel.panel-workarea a {
-	color: orange;
+	color: #fc0;
 }
+
+/*
+ * CSS3: Selectors
+ */
+body:not(.mode-viewer-controller) #panelcontainer-viewer div.panel.panel-workarea a.dimmed {
+	color: #a80;
+}
+
+/*
+ * CSS3: Selectors
+ */
 body:not(.mode-viewer-controller) #panelcontainer-viewer div.panel.panel-workarea article section figure img {
 	border-color: #777;
 }
+
+/*
+ * CSS3: Selectors
+ */
 body:not(.mode-viewer-controller) #panelcontainer-viewer div.panel.panel-workarea {
 	
 	background-color: #000;

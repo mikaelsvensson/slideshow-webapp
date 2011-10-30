@@ -14,10 +14,8 @@
 	var ANNOTATION_TYPE_STAMP = "stamp";
 
 	var URL_TO_SLIDE_TITLE_PATTERN = /\/?(\w+)\.\w{2,5}$/;
-	SlideshowViewer = function(/*slideshowModel, imageCollection, */slideImageId,  prevButtonId, nextButtonId, annotationButtonsContainerId, closeButtonId, commentsListId) {
-		/*this._currentSlideIndex = -1;*/
-		/*this._model = slideshowModel;*/
-		/*this._imageCollection = imageCollection;*/
+	
+	SlideshowViewer = function(slideImageId,  prevButtonId, nextButtonId, annotationButtonsContainerId, closeButtonId, commentsListId) {
 		this._slideImage = U.$(slideImageId)
 		this._prevButton = U.$(prevButtonId);
 		this._nextButton = U.$(nextButtonId);
@@ -110,7 +108,6 @@
 			}
 			
 			var slideData = this._model.slides[this._currentSlideIndex];
-			/*var imageData = this._imageCollection.get(slideData.url);*/
 			
 			if (this._currentSlideContainer.children.length > 0) {
 				var prevSlideContainer = this._currentSlideContainer.children[0];
@@ -124,8 +121,12 @@
 			}
 			
 			var that = this;
-			var img = new Image(/*imageData.width, imageData.height*/);
+			var img = new Image();
 			img.onload = function (e) {
+				
+				var audioEl = U.$("viewer-slidechangeaudio");
+				audioEl.currentTime = 0;
+				audioEl.play();
 				
 				var slideContainer = U.createElement("div");
 				
@@ -284,7 +285,7 @@
 	};
 	
 	SlideshowViewer.prototype._loadStampAnnotation = function(annotation, container) {
-		this._addSvgCircle(annotation.region, container);
+		this._addSvgStar(annotation.region, container);
 	};
 	
 	SlideshowViewer.prototype._addSvgCircle = function(region, container) {
@@ -310,6 +311,39 @@
 				"r", r, 
 				"style", "fill: url(#bg); stroke-width: 0.1em; stroke: rgba(253, 208, 23, 1.0)");
 		U.appendChildren(el, defs, circle);
+		container.appendChild(el);
+	};
+	
+	SlideshowViewer.prototype._addSvgStar = function(region, container) {
+		var SVG_NS = "http://www.w3.org/2000/svg";
+		var STAR_POINT_COUNT = 9;
+		
+		var coords = [];
+		
+		var origoX = region.x + (region.width / 2);
+		var origoY = region.y + (region.height / 2);
+		var radiusOuter = Math.min(region.width, region.height) / 2;
+		var radiusInner = radiusOuter * 0.7;
+		var offsetRad = 2 * Math.PI / STAR_POINT_COUNT;
+		var angle = -Math.PI / 2;
+		
+		for (var i = 0; i <= STAR_POINT_COUNT * 2; i++) {
+			var radius = (i % 2 == 0 ? radiusOuter : radiusInner);
+			var x = origoX + Math.cos(angle) * radius;
+			var y = origoY + Math.sin(angle) * radius;
+			coords.push(x + "," + y);
+			angle += (offsetRad / 2);
+		}
+		
+		/*
+		 * SVG
+		 */
+		var el = U.createElementNS(SVG_NS, "svg", 
+				"version", "1.1");
+		var circle = U.createElementNS(SVG_NS, "polygon", 
+				"points", coords.join(" "), 
+				"style", "fill: none; stroke-width: 1em; stroke: rgba(253, 208, 23, 0.7)");
+		el.appendChild(circle);
 		container.appendChild(el);
 	};
 	
@@ -339,12 +373,11 @@
 		while (childCount-- > 0) {
 			container.children[0].parentNode.removeChild(container.children[0]);
 		}
+		this._canvasTools.clear();
 	};
 	
 	SlideshowViewer.prototype._loadAnnotations = function(container) {
 		var annotations = this._model.slides[this._currentSlideIndex].annotations;
-		
-		//this._commentsList.innerHTML = "";
 		
 		if (annotations && annotations.length > 0) {
 			for (var i=0; i < annotations.length; i++) {
@@ -364,23 +397,23 @@
 		addCommentLink.onclick = function(e) {
 			that._onAddCommentButtonClick(e);
 		};*/
-		var addMosaicLink = this._createAnnotationButton("Censurera", "Censurera del av bild: Klicka först här och markera sedan området i bilden.", function(e) {
+		var addMosaicLink = this._createAnnotationButton("Censurera", false, "Censurera del av bild: Klicka här och markera sedan området i bilden.", function(e) {
 			that._onAddMosaicButtonClick(e);
 		});
-		var addBalloonLink = this._createAnnotationButton("Pratbubbla", "Lägga till pratbubbla: Klicka först här och sedan på önskad plats i bilden.", function(e) {
+		var addBalloonLink = this._createAnnotationButton("Pratbubbla", false, "Lägga till pratbubbla: Klicka här och sedan på önskad plats i bilden.", function(e) {
 			that._onAddBalloonButtonClick(e);
 		});
-		var addStampLink = this._createAnnotationButton("Gloria", "Lägga till gul gloria: Klicka först här och markera sedan området i bilden som glorian ska läggas på.", function(e) {
+		var addStampLink = this._createAnnotationButton("Stjärna", false, "Lägg till guldstjärna: Klicka här och markera sedan området som stjärnan ska ritas inom.", function(e) {
 			that._onAddStampButtonClick(e);
 		});
-		var removeAnnotationsLink = this._createAnnotationButton("Ta bort", "Ta bort alla censueringar, pratbubblor och glorior i aktuell bild.", function(e) {
+		var removeAnnotationsLink = this._createAnnotationButton("Ta bort", true, "Ta bort alla censueringar, pratbubblor och stjärnor i aktuell bild.", function(e) {
 			that._onRemoveAnnotationsButtonClick(e);
 		});
 		
 		U.appendChildren(this._annotationButtonsContainer, /*addCommentLink,*/ addBalloonLink, addMosaicLink, addStampLink, removeAnnotationsLink);
 	};
 
-	SlideshowViewer.prototype._createAnnotationButton = function(text, helpText, clickHandler) {
+	SlideshowViewer.prototype._createAnnotationButton = function(text, isDimmed, helpText, clickHandler) {
 		var linkEl = U.createElement("a", "", "href", "#");
 		var textEl = U.createElement("span", text);
 		var helpTextEl = U.createElement("span", helpText);
@@ -389,6 +422,9 @@
 		textEl.appendChild(helpTextWrapperEl);
 		linkEl.appendChild(textEl);
 		linkEl.onclick = clickHandler;
+		if (isDimmed) {
+			linkEl.classList.add("dimmed");
+		}
 		return linkEl;
 	};
 	SlideshowViewer.prototype._initNavigationButtons = function() {

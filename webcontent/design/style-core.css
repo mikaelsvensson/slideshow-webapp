@@ -6,7 +6,8 @@
  * Usage:
  * font-family: "Open Sans", sans-serif;
  */
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700);
+@import url(style-font.css);
+/*@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700);*/
 /*
  * CSS3: CSS Fonts Module Level 3
  *
@@ -24,21 +25,21 @@
  * font-family: 'Black Ops One', cursive;
  * font-family: 'Sancreek', cursive;
  */
-@import url(http://fonts.googleapis.com/css?family=Permanent+Marker|Corben:700|Shadows+Into+Light|UnifrakturCook:700|Rock+Salt|Chewy|Special+Elite|UnifrakturMaguntia|Black+Ops+One|Sancreek);
+/*@import url(http://fonts.googleapis.com/css?family=Permanent+Marker|Corben:700|Shadows+Into+Light|UnifrakturCook:700|Rock+Salt|Chewy|Special+Elite|UnifrakturMaguntia|Black+Ops+One|Sancreek);*/
 @import url(style-panel.css);
 @import url(designer.css);
 @import url(viewer.css);
+* {
+	font-weight: normal;
+}
 body {
-	font-family: "Open Sans", sans-serif;
+	font-family: SlideshowNormal, sans-serif;
+	font-weight: normal;
 	margin: 0;
 	padding: 0;
-	font-weight: 400;
 	height: 100%;
 	overflow: hidden;
 	font-size: 0.9em;
-}
-a {
-	color: 
 }
 body > div {
 	display: none;
@@ -52,13 +53,14 @@ p, figure {
 }
 h1 {
 	font-size: 2em;
-	font-weight: 300;
-	letter-spacing: -0.05em;
+	font-weight: normal;
+letter-spacing: -0.05em;
 	margin: 0;
 	padding: 0;
 }
 h1 strong {
-	font-weight: 700;
+	font-family: SlideshowStrong;
+	font-weight: normal;
 }
 .slides div.sep, .slides div.image {
 	height: 250px;
@@ -171,7 +173,10 @@ button.save {
 
 a {
 	text-decoration: none;
-	color: blue;
+	color: #00f;
+}
+a.dimmed {
+	color: #88d;
 }
 a > span {
 	position: relative;
