@@ -77,28 +77,42 @@ webSocketServer.sockets.on("connection", function (socket) {
 	});
 	
 	socket.on("image-list", function (responseCallback) {
-		var files = fs.readdirSync(CLIENT_ROOT + "slides");
-		console.log(files);
-		var response = [];
-		for (var i=0; i < files.length; i++) {
-			var file = files[i];
-			var lcName = file.toLowerCase();
-			
-			if (lcName.indexOf(".thumbnail.jpg") == -1 && lcName.substr(lcName.length-4) == ".jpg") {
-				var fileObj = {
-					url: "slides/" + file
-				};
-				if (i < files.length-1) {
-					var nextFile = files[i+1];
-					var lcNextName = nextFile.toLowerCase();
-					if (lcNextName.indexOf(".thumbnail.jpg") != -1) {
-						fileObj.thumbnailUrl = "slides/" + nextFile;
-					}
-				}
-				response.push(fileObj);
-			}
-		}
-		responseCallback(response);
+	    
+	    var scanDir = function (path, result) {
+	        var ROOT = CLIENT_ROOT + "/";
+	        var THUMBNAIL_FILE_SUFFIX = "_resize.jpg";
+	        var files = fs.readdirSync(ROOT + path);
+	        console.log(files);
+	        for (var i=0; i < files.length; i++) {
+	            
+	            var file = files[i];
+	            
+	            var stat = fs.statSync(ROOT + path + "/" + file);
+	            
+	            if (stat.isDirectory()) {
+	                scanDir(path + "/" + file, result);
+	            } else {
+	                var lcName = file.toLowerCase();
+	                
+	                if (lcName.indexOf(THUMBNAIL_FILE_SUFFIX) == -1 && lcName.substr(lcName.length-4) == ".jpg") {
+	                    var fileObj = {
+	                            url: path + "/" + file
+	                    };
+	                    var thumbFile = file.substr(0, file.length-4) + THUMBNAIL_FILE_SUFFIX;
+	                    if (fs.statSync(ROOT + path + "/" + thumbFile).isFile()) {
+	                        fileObj.thumbnailUrl = path + "/" + thumbFile;
+	                        
+	                    }
+	                    result.push(fileObj);
+	                }
+	            }
+	            
+	        }
+	    };
+	    
+	    var r = [];
+	    scanDir("slides", r);
+	    responseCallback(r);
 	});
 	socket.on("login", function (data) {
 		console.log(data.name + " has logged in.");

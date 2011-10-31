@@ -16,3 +16,7 @@ div#panelcontainer-designmode > div.panel-left {
 	left: 10px;
 	top: 10px;
 }
+/*#designer-images.slides */div.sep, /*#designer-images.slides */div.image {
+	display: block;
+	float: left;
+}

@@ -6,7 +6,7 @@ div#panelcontainer-viewer > div.panel-workarea {
 }
 div#panelcontainer-viewer > div.panel-workarea > div {
 	/*
-	 * CSS3: Flexible Box Layout Module
+	 * CSS3: Flexible Box Layout
 	 */
     -moz-box-orient: vertical;
     -webkit-box-orient: vertical;
@@ -18,14 +18,14 @@ div#panelcontainer-viewer > div.panel-workarea > div {
 }
 #viewer header {
 	/*
-	 * CSS3: Flexible Box Layout Module
+	 * CSS3: Flexible Box Layout
 	 */
     -moz-box-flex: 0;
     -webkit-box-flex: 0;
 }
 #viewer article {
 	/*
-	 * CSS3: Flexible Box Layout Module
+	 * CSS3: Flexible Box Layout
 	 */
     -moz-box-align: center;
     -webkit-box-align: center;
@@ -40,7 +40,7 @@ div#panelcontainer-viewer > div.panel-workarea > div {
 }
 #viewer article section {
 	/*
-	 * CSS3: Flexible Box Layout Module
+	 * CSS3: Flexible Box Layout
 	 */
     -moz-box-align: center;
     -webkit-box-align: center;
@@ -62,22 +62,27 @@ div#panelcontainer-viewer > div.panel-workarea > div {
 }
 #viewer article section figure figcaption {
 	/*
-	 * CSS3: CSS Transitions Module Level 3
+	 * CSS3: Transitions
 	 */
-    -moz-transition: opacity 0.5s ease-in-out 0s;
-    -webkit-transition: opacity 0.5s ease-in-out 0s;
+    -moz-transition: opacity 0.3s ease-in-out 0s;
+    -webkit-transition: opacity 0.3s ease-in-out 0s;
     
-    left: 5%;
-    margin-top: -25px;
+    margin-top: -1em;
     opacity: 0;
     position: absolute;
     top: 50%;
-    width: 90%;
+    width: 100%;
 
-	background-color: #fff;
 	text-align: center;
-	padding: 1em 0;
-	color: #555;
+	
+	font-family: SlideshowStrong;
+	font-size: 2em;
+	color: #fff;
+	
+	/*
+	 * CSS3: Text
+	 */
+	text-shadow: 0.05em 0.05em 0.2em #000;
 }
 #viewer article section figure:hover figcaption {
     opacity: 0.9;
@@ -87,7 +92,7 @@ div#panelcontainer-viewer > div.panel-workarea > div {
 }
 #viewer article section figure blockquote {
 	/*
-	 * CSS3: CSS Backgrounds and Borders Module Level 3
+	 * CSS3: Backgrounds and Borders
 	 */
     -moz-border-image: url("annotation-balloon-border.png") 15 10 10 15 repeat;
     -webkit-border-image: url("annotation-balloon-border.png") 15 10 10 15 repeat;
@@ -115,7 +120,7 @@ div#panelcontainer-viewer > div.panel-workarea > div {
 }
 #viewer article nav {
 	/*
-	 * CSS3: Flexible Box Layout Module
+	 * CSS3: Flexible Box Layout
 	 */
     -moz-box-flex: 0;
     -webkit-box-flex: 0;
@@ -126,7 +131,7 @@ div#panelcontainer-viewer > div.panel-workarea > div {
 }
 #viewer footer {
 	/*
-	 * CSS3: Flexible Box Layout Module
+	 * CSS3: Flexible Box Layout
 	 */
     -moz-box-flex: 0;
     -webkit-box-flex: 0;
@@ -137,14 +142,14 @@ div#panelcontainer-viewer > div.panel-workarea > div {
 }
 #viewer footer nav:first-child {
 	/*
-	 * CSS3: Flexible Box Layout Module
+	 * CSS3: Flexible Box Layout
 	 */
     -moz-box-flex: 0;
     -webkit-box-flex: 0;
 }
 #viewer footer nav:last-child {
 	/*
-	 * CSS3: Flexible Box Layout Module
+	 * CSS3: Flexible Box Layout
 	 */
     -moz-box-flex: 1;
     -webkit-box-flex: 1;
@@ -162,13 +167,13 @@ figure .transition-wrapper {
 }
 #viewer #viewer-slide-container > figure .transition-wrapper {
 	/*
-	 * CSS3: CSS Transitions Module Level 3
+	 * CSS3: Transitions
 	 */
     -moz-transition: all 1s ease-in-out 0s;
     -webkit-transition: all 1s ease-in-out 0s;
     
 	/*
-	 * CSS3: Flexible Box Layout Module
+	 * CSS3: Flexible Box Layout
 	 */
     -moz-transform: rotate(5deg) scale(1.3);
     -webkit-transform: rotate(5deg) scale(1.3);
@@ -180,7 +185,7 @@ figure .transition-wrapper {
 }
 #viewer #viewer-slide-container > figure.visible .transition-wrapper {
 	/*
-	 * CSS3: CSS 2D Transforms Module Level 3
+	 * CSS3: 2D Transforms
 	 */
     -moz-transform: none;
     -webkit-transform: none;
@@ -190,7 +195,7 @@ figure .transition-wrapper {
 }
 #viewer .selection {
 	/*
-	 * CSS3: CSS Color Module Level 3
+	 * CSS3: Color
 	 */
     background-color: rgba(100, 100, 100, 0.2);
     border: 1px solid rgba(100, 100, 100, 0.5);
@@ -233,7 +238,7 @@ body:not(.mode-viewer-controller) #panelcontainer-viewer div.panel.panel-workare
 	
 	background-color: #000;
     /*
-     * CSS Image Values and Replaced Content Module Level 3
+     * CSS3: Image Values and Replaced Content
      */
     background-image: -moz-linear-gradient(#222, #333 2em);
     background-image: -webkit-linear-gradient(#222, #333 2em);

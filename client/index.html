@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" manifest="cache.manifest">
+<!-- <html lang="en" manifest="cache.manifest"> -->
+<html lang="en">
 	<head>
 		<!-- HTML5: Markup (meta, doctype) -->
 		<meta charset="UTF-8">
@@ -19,7 +20,7 @@
 		<div id="designer">
 			<div class="panelcontainer panelcontainer-rows" id="panelcontainer-designmode">
 				<div class="panel panel-workarea">
-					<h1>Bildspel <strong id="designer-title"></strong></h1>
+					<h1>Bildspel <input id="designer-title" placeholder="skriv titel här"></input></h1>
 					<div id="designer-images" class="slides"></div>
 					<div style="clear: both"></div>
 				</div>
@@ -28,20 +29,12 @@
 					<span id="slideshowList"></span>
 				</div>
 				<div class="panel panel-toolbar panel-left">
-					<div class="flexpanel-container">
-						<div class="flexpanel-top">
+ 					<div class="accordion" id="designer-availableimages">
+						<div class="accordion-title">
 							<h1>Galleri</h1>
 							<p>
-								Dra bilder från galleriet till rätt plats i bildspelet.
+								Skapa ditt bildspel genom att dra bilder från galleriets mappar till rätt plats i bildspelet. 
 							</p>
-						</div>
-						<div class="flexpanel-center">
-							<div id="designer-availableimages" class="slides"></div>
-						</div>
-						<div class="flexpanel-bottom">
-							<div id="designer-gallery-droparea">
-								Dra hit bildfiler från din dator för att lägga till bilden i galleriet.
-							</div>
 						</div>
 					</div>
 				</div>

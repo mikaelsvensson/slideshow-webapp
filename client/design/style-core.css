@@ -1,5 +1,5 @@
 /*
- * CSS3: CSS Fonts Module Level 3
+ * CSS3: CSS Fonts
  *
  * UI font.
  *
@@ -9,7 +9,7 @@
 @import url(style-font.css);
 /*@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700);*/
 /*
- * CSS3: CSS Fonts Module Level 3
+ * CSS3: CSS Fonts
  *
  * Stamp fonts. Font weight is 400 (or 700 in two cases).
  *
@@ -29,6 +29,7 @@
 @import url(style-panel.css);
 @import url(designer.css);
 @import url(viewer.css);
+@import url(accordion.css);
 * {
 	font-weight: normal;
 }
@@ -54,20 +55,25 @@ p, figure {
 h1 {
 	font-size: 2em;
 	font-weight: normal;
-letter-spacing: -0.05em;
+	letter-spacing: -0.02em;
 	margin: 0;
 	padding: 0;
 }
-h1 strong {
+h1 input {
 	font-family: SlideshowStrong;
 	font-weight: normal;
+	font-size: 1em;
+	width: 15em;
+}
+div[draggable] {
+	cursor: move;
 }
 .slides div.sep, .slides div.image {
 	height: 250px;
 	display: block;
-	float: left;
 	margin: 10px;
 }
+
 .slides div.sep {
 	width: 30px;
 	border: 1px dashed #aaa;
@@ -86,12 +92,12 @@ h1 strong {
 	background-color: #eee;
 	position: relative; /* relative positioning to allow absolute positioning of delete buttons. */
 	/*
-	 * CSS Image Values and Replaced Content Module Level 3
+	 * CSS Image Values and Replaced Content
 	 */
 	background-image: -moz-radial-gradient(rgba(0,0,0,0.6), transparent);
 	background-image: -webkit-radial-gradient(rgba(0,0,0,0.6), transparent);
 	/*
-	 * CSS Backgrounds and Borders Module Level 3
+	 * CSS Backgrounds and Borders
 	 */
 	border-radius: 10px;
 	box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.5);
@@ -100,7 +106,7 @@ h1 strong {
 }
 .slides figure {
 	/*
-	 * CSS3: Flexible Box Layout Module
+	 * CSS3: Flexible Box Layout
 	 */
 	-moz-box-align: center;
 	-webkit-box-align: center;
@@ -113,7 +119,7 @@ h1 strong {
 }
 .slides figure div {
 	/*
-	 * CSS3: Flexible Box Layout Module
+	 * CSS3: Flexible Box Layout
 	 */
 	-moz-box-align: center;
 	-webkit-box-align: center;
@@ -128,7 +134,7 @@ h1 strong {
 }
 .slides figcaption {
 	/*
-	 * CSS3: Flexible Box Layout Module
+	 * CSS3: Flexible Box Layout
 	 */
 	-moz-box-flex: 0;
 	-webkit-box-flex: 0;
@@ -141,7 +147,7 @@ h1 strong {
 }
 .slides div.sep {
 	/*
-	 * CSS Transitions Module Level 3
+	 * CSS Transitions
 	 */
 	-moz-transition: background-color 0.5s linear;
 	-webkit-transition: background-color 0.5s linear;
@@ -194,7 +200,7 @@ a > span > span {
 }
 a > span > span > span {
 	/*
-	 * CSS3: CSS Backgrounds and Borders Module Level 3
+	 * CSS3: CSS Backgrounds and Borders
 	 */
     -moz-border-image: url("tooltip-border.png") 5 5 10 5 repeat;
     -webkit-border-image: url("tooltip-border.png") 5 5 10 5 stretch;
@@ -211,7 +217,7 @@ a:hover > span > span {
 }
 
 /*
- * CSS Animations Module Level 3
+ * CSS Animations
  */
 @-moz-keyframes tooltip {
 	0% {

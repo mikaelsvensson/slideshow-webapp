@@ -29,10 +29,47 @@
 		this._initLocalFilesDropArea();
 		this._initButtons();
 	};
+	
+    SlideshowDesigner.prototype._onGalleryHeaderClick = function (event) {
+        var prevId = this.parentNode.dataset.expandedcollectionid;
+        var thisId = this.dataset.collectionid;
+        if (prevId && prevId > 0) {
+            U.$("gallery-collection-" + prevId).classList.add("collapsed");
+            U.$("collection-header-" + prevId).classList.add("collapsed");
+            this.parentNode.dataset.expandedcollectionid = 0;
+        }
+        if (thisId != prevId) {
+            U.$("gallery-collection-" + thisId).classList.remove("collapsed");
+            U.$("collection-header-" + thisId).classList.remove("collapsed");
+            this.parentNode.dataset.expandedcollectionid = this.dataset.collectionid;
+        }
+    };
+    
 	SlideshowDesigner.prototype._initGallery = function() {
 		var data = this._imageCollection.getList();
+		var collections = {};
 		for(var i = 0; i < data.length; i++) {
-			var img = new Image();
+		    
+            var parts = data[i].url.split("/");
+            var collection = (parts.length > 2 ? parts[1] : "misc");
+            if (!collections[collection]) {
+                var collectionId = this._galleryContainer.children.length;
+                var colEl = U.createElement("div", null, "id", "gallery-collection-" + collectionId);
+                colEl.classList.add("slides");
+                colEl.classList.add("accordion-panel-content");
+                colEl.classList.add("collapsed");
+                collections[collection] = colEl;
+                
+                var header = U.createElement("div", "<a>" + collection + "</a>", "id", "collection-header-" + collectionId);
+                header.classList.add("collapsed");
+                header.classList.add("accordion-panel-header");
+                header.onclick = this._onGalleryHeaderClick;
+                header.dataset.collectionid = collectionId;
+                this._galleryContainer.appendChild(header);
+                this._galleryContainer.appendChild(colEl);
+            }
+		    
+		    var img = new Image();
 			img.src = data[i].thumbnailUrl;
 			img.draggable = false;
 
@@ -60,8 +97,14 @@
 			imageContainer.dataset.url = data[i].url;
 
 			imageContainer.appendChild(fig);
-			this._galleryContainer.appendChild(imageContainer);
+			
+			collections[collection].appendChild(imageContainer);
+			//this._galleryContainer.appendChild(imageContainer);
 		}
+		
+//		for (var i in collections) {
+//		    this._galleryContainer.parentNode.insertBefore(collections[i], this._galleryContainer);
+//		}
 	};
 	SlideshowDesigner.prototype._initSlides = function() {
 		this._slidesContainer.appendChild(this._initSlides_createSlideSeparator());

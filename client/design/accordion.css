@@ -1,0 +1,52 @@
+@CHARSET "ISO-8859-1";
+div.panel div.accordion {
+	/*
+	 * CSS3: Flexible Box Layout
+	 */
+    -moz-box-orient: vertical;
+    -webkit-box-orient: vertical;
+    display: -moz-box;
+    display: -webkit-box;
+    
+    height: 100%;
+    width: 100%;
+}
+div.accordion-panel-header {
+	padding: 0 0 0 40px;
+    
+    /*
+     * CSS Backgrounds and Borders
+     */
+    border-radius: 10px 10px 10px 10px;
+	background-image: url("folder.png"), url("minus32.png");
+	background-repeat: no-repeat;
+	background-position: 16px center, 0px center;
+	background-size: auto, auto 70%;
+}
+div.accordion-panel-header.collapsed {
+    /*
+     * CSS Backgrounds and Borders
+     */
+    border-radius: 10px 10px 10px 10px;
+	background-image: url("folder.png"), url("plus32.png");
+}
+div.accordion-title,
+div.accordion-panel-header {
+	/*
+	 * CSS3: Flexible Box Layout
+	 */
+	-moz-box-flex: 0;
+	-webkit-box-flex: 0;
+}
+div.accordion-panel-content {
+	/*
+	 * CSS3: Flexible Box Layout
+	 */
+	-moz-box-flex: 1;
+	-webkit-box-flex: 1;
+	
+	overflow: auto;
+}
+div.accordion-panel-header.collapsed + div.accordion-panel-content {
+	display: none;
+}

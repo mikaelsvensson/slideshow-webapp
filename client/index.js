@@ -11,8 +11,8 @@ window.onload = function() {
 	}
 	if(!slideshowModel) {
 		var slideshowModel = {
-			title : "Untitled Slideshow",
-			slides : []
+			title: null,
+			slides: []
 		};
 	}
 	
@@ -29,9 +29,7 @@ window.onload = function() {
 
 		socket.emit("image-list", function(data) {
 			var imageCollection = new ImageCollection();
-
-			for(var i in data) {
-
+			for (var i in data) {
 				imageCollection.addImage(data[i].url, data[i].thumbnailUrl, data[i].width, data[i].height);
 			}
 
@@ -87,7 +85,13 @@ window.onload = function() {
 		});
 	});
 
-	U.$("designer-title").innerHTML = slideshowModel.title;
+	var titleInput = U.$("designer-title"); 
+	if (slideshowModel.title) {
+	    titleInput.value = slideshowModel.title;
+	}
+	titleInput.onchange = function () {
+	    slideshowModel.title = this.value;
+	};
 
 	U.$("designer-save-button").onclick = function(e) {
 		/*

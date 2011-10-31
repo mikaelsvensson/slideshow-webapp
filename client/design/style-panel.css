@@ -12,7 +12,7 @@ div.panelcontainer-cols {
 }
 div.panelcontainer-rows {
 	/*
-	 * CSS3: Flexible Box Layout Module
+	 * CSS3: Flexible Box Layout
 	 */
 	-moz-box-orient: vertical;
 	-webkit-box-orient: vertical;
@@ -24,7 +24,7 @@ div.panelcontainer-rows {
 }
 div.panel {
 	/*
-	 * CSS3: Flexible Box Layout Module
+	 * CSS3: Flexible Box Layout
 	 */
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -33,11 +33,11 @@ div.panel {
      */
     box-sizing: border-box;
     /*
-     * CSS Backgrounds and Borders Module Level 3
+     * CSS Backgrounds and Borders
      */
     border-radius: 10px 10px 10px 10px;
     /*
-     * CSS Image Values and Replaced Content Module Level 3
+     * CSS Image Values and Replaced Content
      */
     background-image: -moz-linear-gradient(#ddd, #fff 2em);
     background-image: -webkit-linear-gradient(#ddd, #fff 2em);
@@ -72,39 +72,3 @@ div.panel-workarea {
 	overflow: auto;
 }
 
-
-div.panel div.flexpanel-container {
-	/*
-	 * CSS3: Flexible Box Layout Module
-	 */
-    -moz-box-orient: vertical;
-    -webkit-box-orient: vertical;
-    display: -moz-box;
-    display: -webkit-box;
-    
-    height: 100%;
-    width: 100%;
-}
-div.flexpanel-top {
-	/*
-	 * CSS3: Flexible Box Layout Module
-	 */
-	-moz-box-flex: 0;
-	-webkit-box-flex: 0;
-}
-div.flexpanel-center {
-	/*
-	 * CSS3: Flexible Box Layout Module
-	 */
-	-moz-box-flex: 1;
-	-webkit-box-flex: 1;
-	
-	overflow: auto;
-}
-div.flexpanel-bottom {
-	/*
-	 * CSS3: Flexible Box Layout Module
-	 */
-	-moz-box-flex: 0;
-	-webkit-box-flex: 0;
-}
