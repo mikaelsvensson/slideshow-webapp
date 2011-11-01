@@ -17,7 +17,6 @@ div.accordion-panel-header {
     /*
      * CSS Backgrounds and Borders
      */
-    border-radius: 10px 10px 10px 10px;
 	background-image: url("folder.png"), url("minus32.png");
 	background-repeat: no-repeat;
 	background-position: 16px center, 0px center;
@@ -27,7 +26,6 @@ div.accordion-panel-header.collapsed {
     /*
      * CSS Backgrounds and Borders
      */
-    border-radius: 10px 10px 10px 10px;
 	background-image: url("folder.png"), url("plus32.png");
 }
 div.accordion-title,

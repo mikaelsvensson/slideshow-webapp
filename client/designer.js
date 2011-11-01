@@ -13,21 +13,35 @@
 
 	var URL_TO_SLIDE_TITLE_PATTERN = /\/?(\w+)\.\w{2,5}$/;
 	
-	SlideshowDesigner = function(slideshowModel, imageCollection, viewer, slidesContainerId, galleryContainerId, localFilesDropContainerId, buttonContainerId) {
+	SlideshowDesigner = function(imageCollection, viewer, slidesContainerId, galleryContainerId, localFilesDropContainerId, titleInputId) {
+	    try {
+	        /*
+	         * HTML5: Web Storage
+	         */
+	        var slideshowModel = JSON.parse(localStorage["slideshow-webapp-model"]);
+	    } catch (ex) {
+	    }
+	    if(!slideshowModel) {
+	        var slideshowModel = {
+	            title: null,
+	            slides: []
+	        };
+	    }
+	    
 		this._model = slideshowModel;
 		this._imageCollection = imageCollection;
 		this._viewer = viewer;
 		this._slidesContainer = U.$(slidesContainerId);
 		this._galleryContainer = U.$(galleryContainerId);
 		this._localFilesDropContainer = U.$(localFilesDropContainerId);
-		this._buttonContainer = U.$(buttonContainerId);
+		this._titleInputId = U.$(titleInputId);
 	};
 
 	SlideshowDesigner.prototype.init = function() {
 		this._initGallery();
 		this._initSlides();
 		this._initLocalFilesDropArea();
-		this._initButtons();
+		this._initTitleField();
 	};
 	
     SlideshowDesigner.prototype._onGalleryHeaderClick = function (event) {
@@ -47,13 +61,14 @@
     
 	SlideshowDesigner.prototype._initGallery = function() {
 		var data = this._imageCollection.getList();
+		var insertBeforeRef = this._galleryContainer.nextSibling;
 		var collections = {};
 		for(var i = 0; i < data.length; i++) {
 		    
             var parts = data[i].url.split("/");
             var collection = (parts.length > 2 ? parts[1] : "misc");
             if (!collections[collection]) {
-                var collectionId = this._galleryContainer.children.length;
+                var collectionId = this._galleryContainer.parentNode.children.length;
                 var colEl = U.createElement("div", null, "id", "gallery-collection-" + collectionId);
                 colEl.classList.add("slides");
                 colEl.classList.add("accordion-panel-content");
@@ -65,8 +80,8 @@
                 header.classList.add("accordion-panel-header");
                 header.onclick = this._onGalleryHeaderClick;
                 header.dataset.collectionid = collectionId;
-                this._galleryContainer.appendChild(header);
-                this._galleryContainer.appendChild(colEl);
+                this._galleryContainer.parentNode.insertBefore(header, insertBeforeRef);
+                this._galleryContainer.parentNode.insertBefore(colEl, insertBeforeRef);
             }
 		    
 		    var img = new Image();
@@ -240,8 +255,26 @@
 	SlideshowDesigner.prototype._initLocalFilesDropArea = function() {
 
 	};
-	SlideshowDesigner.prototype._initButtons = function() {
-
+	
+	SlideshowDesigner.prototype._initTitleField = function() {
+        this._titleInputId.value = this._model.title ? this._model.title : "";
+        var that = this;
+        this._titleInputId.onchange = function () {
+	        if (this.validity.valid) {
+	            that._model.title = this.value;
+	            that.save();
+	        } else {
+	            alert("Tyvärr får du inte kalla ditt bildspel för '" + this.value + "' eftersom namnet bara får innehålla bokstäver.")
+	            this.value = that._model.title;
+	        }
+	    };
+	};
+	
+	SlideshowDesigner.prototype.save = function() {
+        /*
+         * HTML5: Web Storage
+         */
+        localStorage["slideshow-webapp-model"] = JSON.stringify(this._model);
 	};
 
 	SlideshowDesigner.prototype._onGalleryImageDragStart = function(e) {
@@ -271,6 +304,7 @@
 		} else {
 			slides.splice(newSlideIndex, 0, slide);
 		}
+		this.save();
 		if(this._slidesContainer) {
 			var slideEl = this._createSlideUI(slide, newSlideIndex);
 			var sepEl = this._slidesContainer.children[newSlideIndex * 2];
@@ -282,6 +316,7 @@
 	SlideshowDesigner.prototype.removeSlide = function(slideIndex) {
 		if(this._model.slides) {
 			this._model.slides.splice(slideIndex, 1);
+			this.save();
 		}
 		if(this._slidesContainer) {
 			var slideEl = this._slidesContainer.children[slideIndex * 2 + 1];
@@ -293,6 +328,7 @@
 		if(this._model.slides) {
 			var slide = this._model.slides.splice(currentSlideIndex, 1)[0];
 			this._model.slides.splice(newSlideIndex, 0, slide);
+			this.save();
 
 			if(this._slidesContainer) {
 				var slideEl = this._slidesContainer.children[currentSlideIndex * 2 + 1];
@@ -300,6 +336,7 @@
 				this._slidesContainer.insertBefore(slideEl.nextSibling, sepEl.nextSibling);
 				this._slidesContainer.insertBefore(slideEl, sepEl.nextSibling);
 			}
+			
 		}
 	};
 	SlideshowDesigner.prototype.getModel = function() {

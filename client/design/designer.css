@@ -1,18 +1,12 @@
 div#panelcontainer-designmode > div.panel-workarea {
-	bottom: 70px;
+	bottom: 10px;
 	left: 340px;
 	right: 10px;
 	top: 10px;
 }
-div#panelcontainer-designmode > div.panel-bottom {
-	height: 50px;
-	bottom: 10px;
-	left: 10px;
-	right: 10px;
-}
 div#panelcontainer-designmode > div.panel-left {
 	width: 320px;
-	bottom: 70px;
+	bottom: 10px;
 	left: 10px;
 	top: 10px;
 }

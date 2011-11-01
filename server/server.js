@@ -51,7 +51,7 @@ var getSlideshowList = function () {
 	var slideshowList = [];
 	for (var id in clients) {
 		if (clients[id].slideshow) {
-			slideshowList.push( { "id": clients[id].socket.id, "title": "Slideshow by " + (clients[id].name ? clients[id].name : "Anonymous User") } );
+			slideshowList.push( { "id": clients[id].socket.id, "title": clients[id].slideshow.model.title ? clients[id].slideshow.model.title : "Untitled Slideshow" } );
 		}
 	}
 	return slideshowList;	
@@ -82,7 +82,7 @@ webSocketServer.sockets.on("connection", function (socket) {
 	        var ROOT = CLIENT_ROOT + "/";
 	        var THUMBNAIL_FILE_SUFFIX = "_resize.jpg";
 	        var files = fs.readdirSync(ROOT + path);
-	        console.log(files);
+//	        console.log(files);
 	        for (var i=0; i < files.length; i++) {
 	            
 	            var file = files[i];

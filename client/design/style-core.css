@@ -60,10 +60,17 @@ h1 {
 	padding: 0;
 }
 h1 input {
-	font-family: SlideshowStrong;
+	font-family: SlideshowNormal;
 	font-weight: normal;
 	font-size: 1em;
-	width: 15em;
+	border: 1px solid transparent;
+	background-color: transparent;
+	width: 100%;
+}
+h1 input:hover,
+h1 input:focus {
+	border: 1px solid #ccc;
+	background-color: rgba(100%, 100%, 100%, 0.5);
 }
 div[draggable] {
 	cursor: move;
@@ -214,6 +221,44 @@ a:hover > span > span {
 	display: block;
 	-moz-animation: tooltip 1.25s;
 	-webkit-animation: tooltip 1.25s;
+}
+
+#current-slideshows {
+	margin: 0;
+	padding: 0;
+}
+#current-slideshows a {
+	display: block;
+	padding: 0.5em 0;
+}
+/*
+#current-slideshows:not(:empty)::before {
+	content: "Bildspel som visas just nu:";
+}
+#current-slideshows:not(:empty)::after {
+	content: "Klicka på bildspelen för att titta. Den som startat bildspelet styr vilken bild som visas.";
+}
+#current-slideshows:empty::after {
+	content: "När någon visar ett bildspel syns det här.";
+}
+*/
+#current-slideshows p:first-child:nth-last-child(3) {
+	
+}
+#current-slideshows p#slideshow-list,
+#current-slideshows footer {
+	font-size: 0.8em;
+	color: #999;
+}
+#current-slideshows p:first-child:nth-last-child(3),
+#current-slideshows p#slideshow-list,
+#current-slideshows footer {
+	display: none;
+}
+#current-slideshows p:first-child,
+#current-slideshows p#slideshow-list:nth-last-child(2),
+#current-slideshows a+footer {
+	display: block;
 }
 
 /*
