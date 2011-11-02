@@ -217,6 +217,10 @@ a > span > span > span {
     border-width: 5px 5px 10px 5px;
     padding: 2px 5px;
 }
+
+/*
+ * CSS3: Animation
+ */
 a:hover > span > span {
 	display: block;
 	-moz-animation: tooltip 1.25s;
@@ -231,20 +235,10 @@ a:hover > span > span {
 	display: block;
 	padding: 0.5em 0;
 }
+
 /*
-#current-slideshows:not(:empty)::before {
-	content: "Bildspel som visas just nu:";
-}
-#current-slideshows:not(:empty)::after {
-	content: "Klicka på bildspelen för att titta. Den som startat bildspelet styr vilken bild som visas.";
-}
-#current-slideshows:empty::after {
-	content: "När någon visar ett bildspel syns det här.";
-}
-*/
-#current-slideshows p:first-child:nth-last-child(3) {
-	
-}
+ * CSS3: Selectors
+ */
 #current-slideshows p#slideshow-list,
 #current-slideshows footer {
 	font-size: 0.8em;
@@ -262,7 +256,7 @@ a:hover > span > span {
 }
 
 /*
- * CSS Animations
+ * CSS3: Animations
  */
 @-moz-keyframes tooltip {
 	0% {
