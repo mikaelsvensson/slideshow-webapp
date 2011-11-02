@@ -13,7 +13,7 @@ div.panel div.accordion {
 }
 div.accordion-panel-header {
 	padding: 0 0 0 40px;
-    
+    margin: 0.2em 0;
     /*
      * CSS Backgrounds and Borders
      */
@@ -21,6 +21,11 @@ div.accordion-panel-header {
 	background-repeat: no-repeat;
 	background-position: 16px center, 0px center;
 	background-size: auto, auto 70%;
+	border: 1px solid #ccc;
+	/*
+	 * CSS Backgrounds and Borders
+	 */
+	border-radius: 5px;
 }
 div.accordion-panel-header.collapsed {
     /*

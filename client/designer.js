@@ -9,7 +9,8 @@
 	 */
 	var DND_TRANSFERDATA_TEXTPLAIN = "text/plain";
 	var DND_TYPE_MOVE = "MOVE";
-	var DND_TYPE_ADD = "ADD";
+    var DND_TYPE_ADD = "ADD";
+	var DND_TYPE_ADDCOLLECTION = "ADDCOLLECTION";
 
 	var URL_TO_SLIDE_TITLE_PATTERN = /\/?(\w+)\.\w{2,5}$/;
 	
@@ -80,6 +81,13 @@
                 header.classList.add("accordion-panel-header");
                 header.onclick = this._onGalleryHeaderClick;
                 header.dataset.collectionid = collectionId;
+                header.dataset.baseurl = parts[0] + "/" + parts[1];
+                /*
+                 * HTML5: Drag and drop
+                 */
+                header.draggable = true;
+                header.ondragstart = this._onGalleryCollectionHeaderDragStart;
+                
                 this._galleryContainer.parentNode.insertBefore(header, insertBeforeRef);
                 this._galleryContainer.parentNode.insertBefore(colEl, insertBeforeRef);
             }
@@ -176,6 +184,17 @@
 					var imageThumbnailUrl = rawData[2];
 					that.addSlide(imageUrl, imageThumbnailUrl, dropPos);
 					break;
+                case DND_TYPE_ADDCOLLECTION:
+                    if (confirm("Vill du verkligen lägga in alla mappens bilder i ditt bildspel?")) {
+                        var imageBaseUrl = rawData[1];
+                        var col = that._imageCollection.getList();
+                        for (var i=0; i < col.length; i++) {
+                            if (col[i].url.substr(0, imageBaseUrl.length) == imageBaseUrl) {
+                                that.addSlide(col[i].url, col[i].thumbnailUrl, dropPos++);
+                            }
+                        }
+                    }
+                    break;
 				case DND_TYPE_MOVE:
 					var currentSlideIndex = parseInt(rawData[1], 10);
 					var newSlideIndex = dropPos;
@@ -282,6 +301,13 @@
 		 * HTML5: Drag and drop (datatransfer object)
 		 */
 		e.dataTransfer.setData(DND_TRANSFERDATA_TEXTPLAIN, DND_TYPE_ADD + "|" + this.dataset.url + "|" + this.dataset.thumbnailUrl);
+	};
+	
+	SlideshowDesigner.prototype._onGalleryCollectionHeaderDragStart = function(e) {
+	    /*
+	     * HTML5: Drag and drop (datatransfer object)
+	     */
+	    e.dataTransfer.setData(DND_TRANSFERDATA_TEXTPLAIN, DND_TYPE_ADDCOLLECTION + "|" + this.dataset.baseurl);
 	};
 
 	SlideshowDesigner.prototype._getSlideTitleFromURL = function(url) {

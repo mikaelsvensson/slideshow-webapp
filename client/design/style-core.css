@@ -75,6 +75,9 @@ h1 input:focus {
 div[draggable] {
 	cursor: move;
 }
+div[draggable]:hover {
+	border: 1px solid #88f !important;
+}
 .slides div.sep, .slides div.image {
 	height: 250px;
 	display: block;
@@ -172,13 +175,13 @@ button {
 	vertical-align: bottom;
 }
 button.delete {
-	background-image: url("delete.png");
+	background-image: url("cross.png");
 	position: absolute;
-	top: 2px;
-	right: 2px;
+	top: 4px;
+	right: 4px;
 }
 button.fullsize {
-	background-image: url("photo.png");
+	background-image: url("control_play.png");
 }
 button.save {
 	background-image: url("disk.png");
