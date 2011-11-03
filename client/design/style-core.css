@@ -48,6 +48,10 @@ body > div {
 body.mode-viewer div#viewer, body.mode-designer div#designer {
 	display: block;
 }
+strong {
+	font-family: SlideshowStrong, sans-serif;
+	font-weight: normal;
+}
 p, figure {
 	margin: 0;
 	padding: 0;
@@ -72,99 +76,7 @@ h1 input:focus {
 	border: 1px solid #ccc;
 	background-color: rgba(100%, 100%, 100%, 0.5);
 }
-div[draggable] {
-	cursor: move;
-}
-div[draggable]:hover {
-	border: 1px solid #88f !important;
-}
-.slides div.sep, .slides div.image {
-	height: 250px;
-	display: block;
-	margin: 10px;
-}
 
-.slides div.sep {
-	width: 30px;
-	border: 1px dashed #aaa;
-	background-color: #eee;
-	border-radius: 10px;
-}
-/*
- * Special separator design if no slides have been added.
- */
-.slides div.sep:only-child {
-	width: 100px;
-}
-.slides div.image {
-	width: 250px;
-	border: 1px solid #aaa;
-	background-color: #eee;
-	position: relative; /* relative positioning to allow absolute positioning of delete buttons. */
-	/*
-	 * CSS Image Values and Replaced Content
-	 */
-	background-image: -moz-radial-gradient(rgba(0,0,0,0.6), transparent);
-	background-image: -webkit-radial-gradient(rgba(0,0,0,0.6), transparent);
-	/*
-	 * CSS Backgrounds and Borders
-	 */
-	border-radius: 10px;
-	box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.5);
-	background-repeat: no-repeat;
-	background-position: center center;
-}
-.slides figure {
-	/*
-	 * CSS3: Flexible Box Layout
-	 */
-	-moz-box-align: center;
-	-webkit-box-align: center;
-	-moz-box-orient: vertical;
-	-webkit-box-orient: vertical;
-	display: -moz-box;
-	display: -webkit-box;
-	height: 100%;
-	width: 100%;
-}
-.slides figure div {
-	/*
-	 * CSS3: Flexible Box Layout
-	 */
-	-moz-box-align: center;
-	-webkit-box-align: center;
-	-moz-box-flex: 1;
-	-webkit-box-flex: 1;
-	display: -moz-box;
-	display: -webkit-box;
-}
-.slides figure img {
-	border: 1px solid #777;
-	vertical-align: middle;
-}
-.slides figcaption {
-	/*
-	 * CSS3: Flexible Box Layout
-	 */
-	-moz-box-flex: 0;
-	-webkit-box-flex: 0;
-	font-size: 0.9em;
-	color: rgba(0, 0, 0, 0.5);
-	margin: 0.5em 0;
-}
-.slides div.image:nth-child(4n+1) {
-	background-color: #ccc;
-}
-.slides div.sep {
-	/*
-	 * CSS Transitions
-	 */
-	-moz-transition: background-color 0.5s linear;
-	-webkit-transition: background-color 0.5s linear;
-}
-.slides div.sep.drag-over {
-	background-color: blue;
-}
 button {
 	display: inline-block;
 	background-repeat: no-repeat;
@@ -228,34 +140,6 @@ a:hover > span > span {
 	display: block;
 	-moz-animation: tooltip 1.25s;
 	-webkit-animation: tooltip 1.25s;
-}
-
-#current-slideshows {
-	margin: 0;
-	padding: 0;
-}
-#current-slideshows a {
-	display: block;
-	padding: 0.5em 0;
-}
-
-/*
- * CSS3: Selectors
- */
-#current-slideshows p#slideshow-list,
-#current-slideshows footer {
-	font-size: 0.8em;
-	color: #999;
-}
-#current-slideshows p:first-child:nth-last-child(3),
-#current-slideshows p#slideshow-list,
-#current-slideshows footer {
-	display: none;
-}
-#current-slideshows p:first-child,
-#current-slideshows p#slideshow-list:nth-last-child(2),
-#current-slideshows a+footer {
-	display: block;
 }
 
 /*

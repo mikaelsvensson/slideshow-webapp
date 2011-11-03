@@ -130,7 +130,7 @@
 //		}
 	};
 	SlideshowDesigner.prototype._initSlides = function() {
-		this._slidesContainer.appendChild(this._initSlides_createSlideSeparator());
+		this._slidesContainer.appendChild(this._initSlides_createSlideSeparator("<span><strong>Dra bilder från galleriet</strong> till sådana här ljusblå platshållare.</span>"));
 		for(var i in this._model.slides) {
 			this._initSlides_addSlide(this._model.slides[i], i);
 		}
@@ -145,8 +145,8 @@
 		return dropPos = Math.floor(pos / 2);
 	};
 
-	SlideshowDesigner.prototype._initSlides_createSlideSeparator = function() {
-		var sep = U.createElement("div");
+	SlideshowDesigner.prototype._initSlides_createSlideSeparator = function(text) {
+		var sep = U.createElement("div", text);
 		sep.className = "sep";
 		
 		var that = this;
@@ -351,16 +351,20 @@
 		}
 	};
 	SlideshowDesigner.prototype.moveSlide = function(currentSlideIndex, newSlideIndex) {
-		if(this._model.slides) {
+//	    if (newSlideIndex > currentSlideIndex) {
+//	        newSlideIndex--;
+//	    }
+		if (currentSlideIndex != newSlideIndex && this._model.slides) {
 			var slide = this._model.slides.splice(currentSlideIndex, 1)[0];
 			this._model.slides.splice(newSlideIndex, 0, slide);
 			this.save();
 
 			if(this._slidesContainer) {
 				var slideEl = this._slidesContainer.children[currentSlideIndex * 2 + 1];
-				var sepEl = this._slidesContainer.children[newSlideIndex * 2];
-				this._slidesContainer.insertBefore(slideEl.nextSibling, sepEl.nextSibling);
-				this._slidesContainer.insertBefore(slideEl, sepEl.nextSibling);
+				var sepEl = this._slidesContainer.children[currentSlideIndex * 2 + 2];
+				var refEl = this._slidesContainer.children[newSlideIndex * 2].nextSibling;
+				this._slidesContainer.insertBefore(slideEl, refEl);
+				this._slidesContainer.insertBefore(sepEl, refEl);
 			}
 			
 		}
