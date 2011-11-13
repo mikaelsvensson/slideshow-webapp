@@ -1,8 +1,10 @@
 window.onload = function() {
 
 	var U = new Utils();
+	
+	U.initKeyListening();
 
-	var viewer = new SlideshowViewer(/*slideshowModel, imageCollection, */"viewer-slide", "viewer-prev-button", "viewer-next-button", "viewer-annotations-buttons", "viewer-close-button", "viewer-comments");
+	var viewer = new SlideshowViewer(/*slideshowModel, imageCollection, */"viewer-slide", "viewer-prev-button", "viewer-next-button", "viewer-annotations-buttons", "viewer-close-button", "viewer-comments", "viewer-sound-button");
 	viewer.init();
 	
 	socket = io.connect('http://localhost:8080/');

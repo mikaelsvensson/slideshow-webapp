@@ -98,6 +98,18 @@ button.fullsize {
 button.save {
 	background-image: url("disk.png");
 }
+button.next {
+	background-image: url("next.png");
+}
+button.previous {
+	background-image: url("previous.png");
+}
+button.sound {
+	background-image: url("sound.png");
+}
+button.sound[data-checked='false'] {
+	background-image: url("sound_mute.png");
+}
 
 a {
 	text-decoration: none;

@@ -15,14 +15,16 @@
 
 	var URL_TO_SLIDE_TITLE_PATTERN = /\/?(\w+)\.\w{2,5}$/;
 	
-	SlideshowViewer = function(slideImageId,  prevButtonId, nextButtonId, annotationButtonsContainerId, closeButtonId, commentsListId) {
+	SlideshowViewer = function(slideImageId,  prevButtonId, nextButtonId, annotationButtonsContainerId, closeButtonId, commentsListId, soundButtonId) {
 		this._slideImage = U.$(slideImageId)
 		this._prevButton = U.$(prevButtonId);
 		this._nextButton = U.$(nextButtonId);
 		this._annotationButtonsContainer = U.$(annotationButtonsContainerId);
 		this._closeButton = U.$(closeButtonId);
 		this._commentsList = U.$(commentsListId);
+		this._soundButton = U.$(soundButtonId);
 		this._canvasTools = null;
+		this._isSoundEnabled = false;
 		
 		this._currentSlideContainer = U.$("viewer-slide-container");
 	};
@@ -44,20 +46,36 @@
 		this._initSlide();
 		this._initSlideButtons();
 		this._initNavigationButtons();
+		this._initKeyboardShortcuts();
+        this._initAdditionalButtons();
+	};
+	
+	SlideshowViewer.prototype._initKeyboardShortcuts = function(e) {
+	    U.setKeyListener("left", this.gotoPreviousSlide, this);
+	    U.setKeyListener("right", this.gotoNextSlide, this);
+	    U.setKeyListener("enter", this.gotoNextSlide, this);
+	    U.setKeyListener("esc", this.end, this);
 	};
 
 	SlideshowViewer.prototype._onCloseButtonClick = function(e) {
 		this.end();
 	};
+	
 	SlideshowViewer.prototype._onNextButtonClick = function(e) {
 		if (this._isController) {
 			this.gotoNextSlide();
 		}
 	};
+	
 	SlideshowViewer.prototype._onPrevButtonClick = function(e) {
 		if (this._isController) {
 			this.gotoPreviousSlide();
 		}
+	};
+	
+	SlideshowViewer.prototype._onSoundButtonClick = function(e) {
+	    this._isSoundEnabled = !this._isSoundEnabled;
+	    this._soundButton.dataset.checked = (this._isSoundEnabled ? "true" : "false");
 	};
 
 	SlideshowViewer.prototype.end = function(silent) {
@@ -124,9 +142,11 @@
 			var img = new Image();
 			img.onload = function (e) {
 				
-				var audioEl = U.$("viewer-slidechangeaudio");
-				audioEl.currentTime = 0;
-				audioEl.play();
+			    if (that._isSoundEnabled) {
+			        var audioEl = U.$("viewer-slidechangeaudio");
+			        audioEl.currentTime = 0;
+			        audioEl.play();
+			    }
 				
 				var slideContainer = U.createElement("div");
 				
@@ -438,6 +458,14 @@
 		this._nextButton.onclick = function(e) {
 			that._onNextButtonClick(e);
 		};
+	};
+	SlideshowViewer.prototype._initAdditionalButtons = function() {
+	    var that = this;
+	    
+	    this._soundButton.dataset.checked = (this._isSoundEnabled ? "true" : "false");
+	    this._soundButton.onclick = function(e) {
+	        that._onSoundButtonClick(e);
+	    };
 	};
 
 	SlideshowViewer.prototype.getModel = function() {
